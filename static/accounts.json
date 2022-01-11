@@ -1,0 +1,22 @@
+{
+  "key": {
+    "uname": null,
+    "pass": null
+  },
+  "test": {
+    "uname": "test",
+    "pass": "test"
+  },
+  "kineticcat": {
+    "uname": "kineticcat",
+    "pass": "aaaa"
+  },
+  "aaa": {
+    "uname": "aaa",
+    "pass": "aaa"
+  },
+  "reesk03": {
+    "uname": "reesk03",
+    "pass": "hellothere"
+  }
+}

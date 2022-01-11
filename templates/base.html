@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head onload="">
+
+	<title>{% block title %}{% endblock %}</title>
+	<link rel="shortcut icon" href="static/favicon.ico">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="static/bootstrap.min.css" rel="stylesheet" media="screen"> {% block head %}{% endblock %}
+  <!-- Nav Bar -->
+	<div class="topnav">
+    <!--home button \/-->
+		<a class="active left" href="/">Home</a>
+    <!--end of home button /\-->
+    <!--account stuff-->
+		<div class="dropdown text right">
+			<button class="dropbtn">
+        {{value}}
+    	</button>
+    	<div class="dropdown-content">
+				{% if  loggedin == "False"%}
+					<a href="/login">Login</a>
+				{% endif %}
+      	{% if loggedin == "False" %}
+					<a href="/signup">Signup</a>
+				{% endif %}
+				{% if loggedin == "True"%}
+					<a href="/logout">Logout</a>
+				{% endif %}
+    	</div>
+  	</div>
+    <!--end of account stuff-->
+    <!--project stuff-->
+    <div class="dropdown text left">
+			<button class="dropbtn">
+        Projects
+    	</button>
+    	<div class="dropdown-content">
+				<a href='/metaballs'>metaballs</a>
+    	</div>
+  	</div>
+    <!--end of project stuff-->
+    <!--expanation stuff-->
+    <div class="dropdown text left">
+      <button class="dropbtn" onclick="document.location='/what'">What?</button>
+    </div>
+    <!--end of explanation stuff-->
+	</div>
+  <!--End of Nav Bar-->
+</head>
+<body>
+	{% block Body %}{% endblock %}
+</body>
+</html>

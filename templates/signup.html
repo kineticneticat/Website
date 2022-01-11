@@ -1,0 +1,15 @@
+{%extends 'base.html'%}
+{% block title %} Signup {% endblock %}
+{% block Body %}
+<form action = "/signup" method = "POST">
+	<p><h3 class="text">Enter Username & Password</h3></p>
+	<p class="text"><input class="input" placeholder="Username" type = 'text' name = 'newUN'/></p>
+	<p class="text"><input placeholder="Password" type = 'password' name = "signuppass"/></p>
+	<p class="text"><input placeholder="Re-enter Password" type="password" name="repass"></p>	
+	{% if isPassVerified == 'False' %}
+	<div class="redtext">Password is invalid</div>
+	{% endif %}
+	<p class="text"><input class="button" type = 'submit' value = 'signup'/></p>
+</form>
+<p><small>Please note you will have to sign in after registring b/c I havent figured out how to do it yet.</small></p>
+{% endblock %}
