@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for
 import json
-
+#aaaa
 f = open('static/accounts.json')
 print(json.loads(f.read())["test"]['pass'])
 f.close()
