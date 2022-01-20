@@ -52,10 +52,10 @@ def setcookie():
             f.close()
     return resp
 
-
+isDark = "True"
 @app.route('/')
 def home():
-    try:
+#    try:
         Logged_In = request.cookies.get('Logged_In')
         if Logged_In == "True":
             pyml['name'] = request.cookies.get('userID')
@@ -63,11 +63,9 @@ def home():
             Logged_In = "False"
             pyml['name'] = "Login"
         print(pyml['name'])
-        return render_template('home.html',
-                               value=pyml['name'],
-                               loggedin=loggedin(request))
-    except:
-        return 'this page broke lol'
+        return render_template('home.html', value=pyml['name'], loggedin=loggedin(request), dark=isDark)
+#    except:
+#        return 'this page broke lol'
 
 
 @app.route('/login')
@@ -143,7 +141,8 @@ def metaballs():
         print(pyml['name'])
         return render_template('metaballs.html',
                                value=pyml['name'],
-                               loggedin=loggedin(request))
+                               loggedin=loggedin(request)
+                              )
     except:
         return 'this page broke lol'
 
@@ -155,5 +154,41 @@ def what():
     except:
         return 'this page broke lol'
 
+@app.route('/bezier')
+def bezier():
+    try:
+        Logged_In = request.cookies.get('Logged_In')
+        if Logged_In == "True":
+            pyml['name'] = request.cookies.get('userID')
+        else:
+            Logged_In = "False"
+            pyml['name'] = "Login"
+        print(pyml['name'])
+        return render_template('bezier.html',
+                               value=pyml['name'],
+                               loggedin=loggedin(request))
+    except:
+        return 'this page broke lol'
+
+# @app.errorhandler(404)
+# def error404():
+#   return '404', 404
+
+@app.route('/cube')
+def cube():
+    # try:
+        Logged_In = request.cookies.get('Logged_In')
+        if Logged_In == "True":
+            pyml['name'] = request.cookies.get('userID')
+        else:
+            Logged_In = "False"
+            pyml['name'] = "Login"
+        print(pyml['name'])
+        return render_template('cube.html',
+                               value=pyml['name'],
+                               loggedin=loggedin(request)
+                              )
+    # except:
+    #     return 'this page broke lol'
 
 app.run(host='0.0.0.0', port=80, debug=True)

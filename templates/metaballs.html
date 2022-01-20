@@ -11,13 +11,15 @@
   <!--filters to mak it work-->
   <style>
     #metaballCanvas{
-      filter: blur(10px) contrast(1000%);
+      filter: blur(20px) contrast(10000%);
     }
     #metaballCanvasDiv {
       overflow: hidden;
+      
     }
   </style>
   <script type="text/javascript">
+    let margin = 100
     function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
     }
@@ -36,8 +38,8 @@
       [0, 0]
     ]
     for (i in ballPositions) {
-      ballPositions[i][0] = getRndInteger(0, 1000)
-      ballPositions[i][1] = getRndInteger(0, 1000)
+      ballPositions[i][0] = getRndInteger(0, window.innerWidth - margin)
+      ballPositions[i][1] = getRndInteger(0, 1000 - margin)
     }
     window.onload = startup;
 
@@ -62,9 +64,15 @@
     }
 
     function mouseMove(evt) {
-      mouseX = evt.clientX;
-      mouseY = evt.clientY;
+      mouseX = evt.screenX;
+      mouseY = evt.screenY;
     }
+
+    let scrollAmt = 0
+    const scroller = document.querySelector("body");
+    scroller.addEventListener("scroll", event => {
+    scrollAmt = scroller.scrollTop;
+    });
 
     function moveBall() {
       //get the distance between the mouse and the ball on both axes
@@ -78,13 +86,14 @@
         dx *= 1000/distance;
         dy *= 1000/distance;
       }
-      
+
       //now move
       ballX += dx;
-      ballY += dy - 7;
+      ballY += (dy - 7) + scrollAmt;
       
       var canvas = document.getElementById("metaballCanvas");
       var ctx = canvas.getContext("2d");
+      ctx.canvas.width  = window.innerWidth;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -110,7 +119,6 @@
 
   </script>
 </div>
-<br>
 <p>
   These are metaballs, which are basically little circles (or spheres in 3d!) that stick to each other.
   <br>

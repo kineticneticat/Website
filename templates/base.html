@@ -1,64 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head onload="">
+  <head onload="">
 
-	<title>{% block title %}{% endblock %}</title>
-	<!--Discord Stuff-->
-	<meta content="Kineticcat's Website" property="og:title" />
+    <title>{% block title %}{% endblock %}</title>
+    <!--Discord Stuff-->
+    <meta content="Kineticcat's Website" property="og:title" />
     <meta content="A place for me to store all my HTML projects!" property="og:description" />
     <meta content="https://embed.com/this-is-the-site-url" property="og:url" />
     <meta content="https://embed.com/embedimage.png" property="og:image" />
     <meta content="#43B581" data-react-helmet="true" name="theme-color" />
-	<!--Discord Stuff End-->
-	<link rel="shortcut icon" href="static/favicon.ico">
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="javascript" href="static/script.js">
-	<link rel="stylesheet" href="static/style.css"> 
-	{% block head %}{% endblock %}
-  <!-- Nav Bar -->
-	<div class="topnav">
-    <!--home button \/-->
-		<a class="active left" href="/">Home</a>
-    <!--end of home button /\-->
-    <!--account stuff-->
-		<div class="dropdown text right">
-			<button class="dropbtn">
-        {{value}}
-    	</button>
-    	<div class="dropdown-content">
-				{% if  loggedin == "False"%}
-					<a href="/login">Login</a>
-				{% endif %}
-      	{% if loggedin == "False" %}
-					<a href="/signup">Signup</a>
-				{% endif %}
-				{% if loggedin == "True"%}
-					<a href="/logout">Logout</a>
-				{% endif %}
-    	</div>
-  	</div>
-    <!--end of account stuff-->
-    <!--project stuff-->
-    <div class="dropdown text left">
-			<button class="dropbtn">
-        Projects
-    	</button>
-    	<div class="dropdown-content">
-				<a href='/metaballs'>metaballs</a>
-    	</div>
-  	</div>
-    <!--end of project stuff-->
-    <!--expanation stuff-->
-    <div class="dropdown text left">
-      <button class="dropbtn" onclick="document.location='/what'">What?</button>
+    <!--Discord Stuff End-->
+    <link rel="shortcut icon" href="static/favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="javascript" href="static/script.js">
+    <link rel="stylesheet" href="static/style.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    {% block head %}{% endblock %}
+    <!-- Nav Bar -->
+    <div class="topnav">
+      <!--home button \/-->
+      <a class="active left" href="/">Home</a>
+      <!--end of home button /\-->
+      <!--account stuff-->
+      <div class="dropdown text right">
+        <button class="dropbtn">
+          {{value}}
+        </button>
+        <div class="dropdown-content">
+          {% if  loggedin == "False"%}
+            <a href="/login">Login</a>
+          {% endif %}
+          {% if loggedin == "False" %}
+            <a href="/signup">Signup</a>
+          {% endif %}
+          {% if loggedin == "True"%}
+            <a href="/logout">Logout</a>
+          {% endif %}
+            <button onclick="changemode()"><span class="material-icons">light_mode</span></button>
+        </div>
+      </div>
+      <!--end of account stuff-->
+      <!--project stuff-->
+      <div class="dropdown text left">
+        <button class="dropbtn">
+          Projects
+        </button>
+        <div class="dropdown-content">
+          <a href='/metaballs'>metaballs</a>
+          <a href="/cube">three.js stuff</a>
+        </div>
+      </div>
+      <!--end of project stuff-->
+      <!--expanation stuff-->
+      <div class="dropdown text left">
+        <button class="dropbtn" onclick="document.location='/what'">What?</button>
+      </div>
+      <!--end of explanation stuff-->
     </div>
-    <!--end of explanation stuff-->
-	</div>
-  <!--End of Nav Bar-->
-</head>
-<body>
-	{% block Body %}{% endblock %}
-</body>
+    <!--End of Nav Bar-->
+  </head>
+  {% if dark == "False"%}
+    <body class="dark">
+  {% endif %}
+  {% if dark == "True"%}
+    <body class="light">
+  {% endif %}
+    {% block Body %}{% endblock %}
+  </body>
 </html>

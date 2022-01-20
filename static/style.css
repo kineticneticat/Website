@@ -1,8 +1,25 @@
 /*dark theme*/
-body {
-  background-color:#333
-  font-color 
+
+.dark {
+  background-color:#333;
+  color: #fff
 }
+
+.margin {
+  margin: 100px;
+}
+
+.light {
+  background-color: #fff;
+  color: #333
+}
+
+.material-icons {
+  background-color: rgba(0,0,0,0);
+  border: none;
+}
+
+
 /*basic font*/
 .text {
 	font-family: Arial
@@ -135,4 +152,10 @@ input[type=submit]:hover {
   cursor: pointer;
 	font-family: Arial;
 	font-size: 16px
+}
+#cubehome {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 16px;
+  font-size: 17px
 }

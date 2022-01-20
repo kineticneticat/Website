@@ -19,3 +19,7 @@ let username = getCookie('userID')
 if (is_logged_in = 'True') {
 	document.getElementById("login").textContent=username;
 }
+
+function changeMode() {
+  alert(1)
+}
