@@ -37,7 +37,7 @@ var plane = new THREE.Mesh( geometry, material );
 scene.add( plane );
 
 geometry = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
-material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+material = new THREE.MeshBasicMaterial( { color: 0xffff00, side: THREE.DoubleSide} );
 var torusKnot = new THREE.Mesh( geometry, material );
 scene.add( torusKnot );
 

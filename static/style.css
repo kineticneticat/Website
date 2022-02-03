@@ -28,12 +28,41 @@
 	font-family: Arial, Helvetica, sans-serif;
 	color: #ff0000
 }
+
+/* positioning */
 .left {
 	float: left
 }
 .right {
 	float: right
 }
+.vcentre {
+  position: absolute;
+  top: 50%;
+}
+.hcentre {
+  position: absolute;
+  text-align: centre;
+  width: 100%;
+}
+.centre {
+  top: 50%;
+  width: 100%;
+  text-align: center;
+}
+.top {
+  position: absolute;
+  top: 8px; 
+}
+.bottom {
+  position: absolute;
+  bottom: 8px;
+}
+
+footer {
+  color: rgb(127, 127, 127)
+}
+
 
 /*navbar*/
 /* Add a black background color to the top navigation */
@@ -154,6 +183,8 @@ input[type=submit]:hover {
 	font-size: 16px
 }
 #cubehome {
+  position: absolute;
+  float: right;
   background-color: #04AA6D;
   color: white;
   padding: 16px 16px;

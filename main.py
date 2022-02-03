@@ -191,4 +191,41 @@ def cube():
     # except:
     #     return 'this page broke lol'
 
+@app.route('/tos')
+def tos():
+    # try:
+        Logged_In = request.cookies.get('Logged_In')
+        if Logged_In == "True":
+            pyml['name'] = request.cookies.get('userID')
+        else:
+            Logged_In = "False"
+            pyml['name'] = "Login"
+        print(pyml['name'])
+        return render_template('tos.html',
+                               value=pyml['name'],
+                               loggedin=loggedin(request),
+                               source=request.args['source']
+                              )
+    # except:
+    #     return 'this page broke lol'
+
+@app.route('/prpo')
+def prpo():
+    # try:
+        Logged_In = request.cookies.get('Logged_In')
+        if Logged_In == "True":
+            pyml['name'] = request.cookies.get('userID')
+        else:
+            Logged_In = "False"
+            pyml['name'] = "Login"
+        print(pyml['name'])
+        return render_template('prpo.html',
+                               value=pyml['name'],
+                               loggedin=loggedin(request),
+                               source=request.args['source']
+                              )
+    # except:
+    #     return 'this page broke lol'
+
+
 app.run(host='0.0.0.0', port=80, debug=True)
