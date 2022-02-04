@@ -1,7 +1,8 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 :root {
   font-size: 16px;
   font-family: 'Open Sans';
+  --icon-size: 36px;
   --text-primary: #b6b6b6;
   --text-secondary: #ececec;
   --bg-primary: #23232e;
@@ -38,6 +39,8 @@ main {
   background-color: var(--bg-primary);
   transition: width 600ms ease;
   overflow: none;
+  font-family: 'Open Sans', sans-serif;
+
 }
 
 .navbar-nav {
@@ -52,6 +55,10 @@ main {
 
 .nav-item {
   width: 100%;
+}
+
+.nav-item:last-child {
+  margin-top: auto;
 }
 
 .nav-link {
@@ -119,14 +126,34 @@ main {
   transition: var(--transition-speed);
 }
 
-@keyframes fadein {
+#logoIcon {
+  margin: 0.5rem
+}
+
+@keyframes fadeout {
   0% { opacity: 1 }
   100% { opacity: 0 }
 }
 
+@keyframes fadein {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
+
+.navbar .logo img {
+  opacity: 1;
+  animation: fadein 0.25s linear;
+}
+
 .navbar:hover .logo img {
   opacity: 0;
-  animation: fade 2s linear;
+  animation: fadeout 0.25s linear;
+}
+
+#icon {
+  font-size: 36px;
+  color: #df49a6;
+  margin: 0 1.5rem;
 }
 
 /* .navbar:hover .logo img */
@@ -320,4 +347,12 @@ input[type=submit]:hover {
   font-size: 17px
 }
 
-/* Navbar */
+/* Projects Flex %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
+
+.projectsContainer {
+  display: flex;
+}
+
+.projectsItem {
+  flex: 1;
+}
