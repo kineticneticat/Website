@@ -12,7 +12,7 @@
 
 body {
   color: black;
-  background-color: white;
+  background-color: var(--bg-primary);
   margin: 0;
   padding: 0;
 }
@@ -349,10 +349,25 @@ input[type=submit]:hover {
 
 /* Projects Flex %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
 
-.projectsContainer {
+.projectContainer {
   display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
 }
 
-.projectsItem {
-  flex: 1;
+.projectItem {
+  flex: auto;
+  background-color: yellow;
+  width: 100px;
+  height: 100px;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 20px;
+  max-width: 100px;
+  text-decoration: none;
+  color: #141418;
+}
+
+.projectItem:hover {
+  opacity: 0.5;
 }
