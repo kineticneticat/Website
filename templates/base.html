@@ -6,35 +6,43 @@
   <title>{% block title %}{% endblock %}</title>
   <!--Discord Stuff-->
   <meta content="Kineticcat's Website" property="og:title" />
+  <meta content="Kineticcat's Website" property="title" />
+  <meta content="Kineticcat's Website" name="title" />
   <meta content="A place for me to store all my HTML projects!" property="og:description" />
-  <meta content="https://embed.com/this-is-the-site-url" property="og:url" />
-  <meta content="https://embed.com/embedimage.png" property="og:image" />
+  <meta content="A place for me to store all my HTML projects!" property="description" />
+  <meta content="A place for me to store all my HTML projects!" name="description" />
   <meta content="#43B581" data-react-helmet="true" name="theme-color" />
   <!--Discord Stuff End-->
-  <link rel="shortcut icon" href="static/favicon.ico">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-22N6G1Y5TC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'G-22N6G1Y5TC');
+  </script>
+  <!-- analytics stuff end -->
+  <link rel="shortcut icon" href="../static/favicon.ico">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="javascript" href="static/script.js">
-  <link rel="stylesheet" href="static/style.css">
+  <link rel="script" href="../static/script.js">
+  <link rel="stylesheet" href="../static/style.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" rel="stylesheet"/>
   {% block head %}{% endblock %}
 </head>
-{% if dark == "False"%}
 
-<body class="dark">
-  {% endif %}
-  {% if dark == "True"%}
+<body>
 
-<body class="light">
-  {% endif %}
+
   <nav class="navbar dark">
     <ul class="navbar-nav">
 
       <li class="logo">
         <a href="#" class="nav-link">
           <span class="link-text logo-text">Kineticcat_</span>
-          <img id="logoIcon" src="static/images/logoPink.png" alt="//\*" width="64" height="64">
+          <img id="logoIcon" src="../static/images/logoPink.png" alt="//\*" width="64" height="64">
         </a>
       </li>
 
@@ -67,21 +75,24 @@
       </li>
 
       <li class="nav-item">
-        <a href="/login" class="nav-link">
           {% if loggedin == "True" %}
-          <span id="icon" class="material-icons-round">logout</span>
-          <span class="link-text">Logout</span>
+        <a href="/account" class="nav-link">
+          <span id="icon" class="material-icons-round">account_circle</span>
+          <span class="link-text">{{ name }}</span>
+        </a>
           {% else %}
+        <a href="/login" class="nav-link">
           <span id="icon" class="material-icons-round">login</span>
           <span class="link-text">Login</span>
-          {% endif %}
         </a>
+          {% endif %}
       </li>
 
     </ul>
   </nav>
-
+  <main>
   {% block Body %}{% endblock %}
+  </main>
   <!-- <footer class="bottom hcentre" >
     <div clas></div>
      testing testing 1 2 3

@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for
+from flask import Flask, render_template, request, make_response, redirect, url_for, send_from_directory
 import json
+from flask_sitemap import Sitemap
 #aaaa
-f = open('static/accounts.json')
-print(json.loads(f.read())["test"]['pass'])
-f.close()
-app = Flask('app')
+app = Flask(__name__)
+ext = Sitemap(app=app)
+app.config['SITEMAP_INCLUDE_RULES_WITHOUT_PARAMS'] = True
+app.config['SITEMAP_URL_SCHEME'] = 'https'
+app.config['SITEMAP_IGNORE_ENDPOINTS'] = '/prpo'
 pyml = {}
 
 
@@ -15,33 +17,41 @@ def loggedin(request):
         output = 'True'
     return output
 
+
 def user_check(page):
-  Logged_In = request.cookies.get('Logged_In')
-  if Logged_In == True:
-    pyml['name'] = request.cookies.get('userID')
-  else:
-    Logged_In = "False"
-    pyml['name'] = "Login"
-  print(pyml['name'])
-  return [page, pyml['name'], Logged_In]
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == True:
+        pyml['name'] = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml['name'] = "Login"
+    print(pyml['name'])
+    return [page, pyml['name'], Logged_In]
 
-@app.route('/setcookie', methods=['POST', 'GET'])
+
+@app.route('/setcookie', methods=['POST'])
 def setcookie():
-
+    print('testt')
     if request.method == 'POST':
         user = str(request.form['usrnm'])
-        f = open('static/accounts.json')
+        print('testt')
+        f = open('secrets/accounts.json')
         accounts = f.read()
         accounts_json = json.loads(accounts)
         try:
-            json.loads(f.read())[user]['uname']
+            accounts_json[user]['uname']
+            FailedLogin = 'no'
         except:
             FailedLogin = 'yes'
         finally:
-            passfinder = str(accounts_json[user]['pass'])
+            try:
+                passfinder = str(accounts_json[user]['pass'])
+            except:
+                passfinder = None
             usedpass = str(request.form['loginpass'])
-            print(passfinder)
-            print(usedpass)
+            print(f'pass : {passfinder}')
+            print(f'inpass : {usedpass}')
+
             if usedpass == passfinder and FailedLogin != 'yes':
                 Logged_In = "True"
             else:
@@ -50,20 +60,30 @@ def setcookie():
             resp.set_cookie('userID', user)
             resp.set_cookie('Logged_In', Logged_In)
             f.close()
-    return resp
+            return resp
+    else:
+        return "Failed"
+
 
 isDark = "True"
+
+
 @app.route('/')
 def home():
-#    try:
-        Logged_In = request.cookies.get('Logged_In')
-        if Logged_In == "True":
-            pyml['name'] = request.cookies.get('userID')
-        else:
-            Logged_In = "False"
-            pyml['name'] = "Login"
-        print(pyml['name'])
-        return render_template('home.html', value=pyml['name'], loggedin=loggedin(request), dark=isDark)
+    #    try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml['name'] = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml['name'] = "Login"
+    print(pyml['name'])
+    return render_template('home.html',
+                           name=pyml['name'],
+                           loggedin=loggedin(request),
+                           dark=isDark)
+
+
 #    except:
 #        return 'this page broke lol'
 
@@ -103,7 +123,7 @@ def signup():
                 passVerified = 'True'
             else:
                 passVerified = 'False'
-            f = open('static/accounts.json')
+            f = open('secrets/accounts.json')
             accounts = json.loads(f.read())
             f.close()
             try:
@@ -113,7 +133,7 @@ def signup():
             finally:
                 if passVerified == 'True':
                     accounts[newUN] = {"uname": newUN, "pass": pwd}
-                    f = open('static/accounts.json', 'w')
+                    f = open('secrets/accounts.json', 'w')
                     f.write(json.dumps(accounts, indent=2))
                     f.flush()
                     f.close()
@@ -129,7 +149,7 @@ def projects():
     return render_template('projects.html')
 
 
-@app.route('/metaballs')
+@app.route('/projects/metaballs')
 def metaballs():
     try:
         Logged_In = request.cookies.get('Logged_In')
@@ -141,8 +161,7 @@ def metaballs():
         print(pyml['name'])
         return render_template('metaballs.html',
                                value=pyml['name'],
-                               loggedin=loggedin(request)
-                              )
+                               loggedin=loggedin(request))
     except:
         return 'this page broke lol'
 
@@ -154,7 +173,8 @@ def what():
     except:
         return 'this page broke lol'
 
-@app.route('/bezier')
+
+@app.route('/projects/bezier')
 def bezier():
     try:
         Logged_In = request.cookies.get('Logged_In')
@@ -170,62 +190,100 @@ def bezier():
     except:
         return 'this page broke lol'
 
+
 # @app.errorhandler(404)
 # def error404():
 #   return '404', 404
 
-@app.route('/cube')
+
+@app.route('/projects/cube')
 def cube():
     # try:
-        Logged_In = request.cookies.get('Logged_In')
-        if Logged_In == "True":
-            pyml['name'] = request.cookies.get('userID')
-        else:
-            Logged_In = "False"
-            pyml['name'] = "Login"
-        print(pyml['name'])
-        return render_template('cube.html',
-                               value=pyml['name'],
-                               loggedin=loggedin(request)
-                              )
-    # except:
-    #     return 'this page broke lol'
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml['name'] = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml['name'] = "Login"
+    print(pyml['name'])
+    return render_template('cube.html',
+                           value=pyml['name'],
+                           loggedin=loggedin(request))
+
+@app.route('/projects/web')
+def web():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml['name'] = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml['name'] = "Login"
+    print(pyml['name'])
+    return render_template('cube.html',
+                           value=pyml['name'],
+                           loggedin=loggedin(request))
+  
+
+# except:
+#     return 'this page broke lol'
+
 
 @app.route('/tos')
 def tos():
     # try:
-        Logged_In = request.cookies.get('Logged_In')
-        if Logged_In == "True":
-            pyml['name'] = request.cookies.get('userID')
-        else:
-            Logged_In = "False"
-            pyml['name'] = "Login"
-        print(pyml['name'])
-        return render_template('tos.html',
-                               value=pyml['name'],
-                               loggedin=loggedin(request),
-                               source=request.args['source']
-                              )
-    # except:
-    #     return 'this page broke lol'
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml['name'] = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml['name'] = "Login"
+    print(pyml['name'])
+    return render_template('tos.html',
+                           value=pyml['name'],
+                           loggedin=loggedin(request),
+                           source=request.args['source'])
+
+
+# except:
+#     return 'this page broke lol'
+
 
 @app.route('/prpo')
 def prpo():
     # try:
-        Logged_In = request.cookies.get('Logged_In')
-        if Logged_In == "True":
-            pyml['name'] = request.cookies.get('userID')
-        else:
-            Logged_In = "False"
-            pyml['name'] = "Login"
-        print(pyml['name'])
-        return render_template('prpo.html',
-                               value=pyml['name'],
-                               loggedin=loggedin(request),
-                               source=request.args['source']
-                              )
-    # except:
-    #     return 'this page broke lol'
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml['name'] = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml['name'] = "Login"
+    print(pyml['name'])
+    return render_template('prpo.html',
+                           value=pyml['name'],
+                           loggedin=loggedin(request),
+                           source=request.args['source'])
+
+
+# except:
+#     return 'this page broke lol'
+
+
+@app.route('/account')
+def account():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml['name'] = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml['name'] = "Login"
+    print(pyml['name'])
+    return render_template('account.html',
+                           name=pyml['name'],
+                           loggedin=loggedin(request),
+                           test='aaaaaaaaaaaaaaa')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
