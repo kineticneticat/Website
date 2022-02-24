@@ -1,0 +1,13 @@
+{% extends "base.html" %} {% block title %} Metaballs {% endblock %} {% block Body %}
+<!-- jinja head stuff /\-->
+<br> 
+<h1>MetaBalls</h1>
+<small>Not Meatballs!</small>
+<br>
+<div id="metaballCanvasDiv">
+  <!--canvas-->
+  <canvas height="1000" width="1000" style="background:#0000ff" id="metaballCanvas"></canvas>
+  <!--end of canvas-->
+  <script type="text/javascript" src='../static/js/web.js'></script>
+</div>
+{% endblock %}
