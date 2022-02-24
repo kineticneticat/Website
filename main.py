@@ -220,7 +220,7 @@ def web():
         Logged_In = "False"
         pyml['name'] = "Login"
     print(pyml['name'])
-    return render_template('cube.html',
+    return render_template('web.html',
                            value=pyml['name'],
                            loggedin=loggedin(request))
   
