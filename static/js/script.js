@@ -23,3 +23,7 @@ if (is_logged_in = 'True') {
 function changeMode() {
   alert(1)
 }
+
+document.getElementById('main').onclick => {
+  alert('clicked')
+}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, make_response, redirect, url_for, Response
 import json
 from flask_sitemap import Sitemap
 #aaaa
@@ -93,12 +93,6 @@ def login():
     return render_template('login.html',
                            value=pyml['name'],
                            loggedin=loggedin(request))
-
-
-@app.route('/getcookie')
-def getcookie():
-    name = request.cookies.get('userID')
-    return '<h1>welcome ' + name + '</h1>'
 
 
 @app.route('/logout')
@@ -239,10 +233,14 @@ def tos():
         Logged_In = "False"
         pyml['name'] = "Login"
     print(pyml['name'])
+    try:
+      source=request.args['source']
+    except KeyError:
+      source = 'unknown'
     return render_template('tos.html',
                            value=pyml['name'],
                            loggedin=loggedin(request),
-                           source=request.args['source'])
+                           source=source)
 
 
 # except:
@@ -259,10 +257,14 @@ def prpo():
         Logged_In = "False"
         pyml['name'] = "Login"
     print(pyml['name'])
+    try:
+      source=request.args['source']
+    except KeyError:
+      source = 'unknown'
     return render_template('prpo.html',
                            value=pyml['name'],
                            loggedin=loggedin(request),
-                           source=request.args['source'])
+                           source=source)
 
 
 # except:
@@ -284,6 +286,16 @@ def account():
                            loggedin=loggedin(request),
                            test='aaaaaaaaaaaaaaa')
 
+
+@app.route('/robots.txt')
+def robots():
+  with open('templates/robots.txt') as f:
+    return Response(f.read, mimetype='text/txt')
+
+
+@app.errorhandler(404)
+def fourzerofour():
+  return render_template('404.html'), 404
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
