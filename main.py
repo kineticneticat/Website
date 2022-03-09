@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for, Response
+from flask import Flask, render_template, request, make_response, redirect, url_for
 import json
 from flask_sitemap import Sitemap
+from werkzeug.exceptions import HTTPException
 #aaaa
 app = Flask(__name__)
 ext = Sitemap(app=app)
@@ -288,14 +289,25 @@ def account():
 
 
 @app.route('/robots.txt')
-def robots():
+def robots(e):
   with open('templates/robots.txt') as f:
-    return Response(f.read, mimetype='text/txt')
+    response = make_response()
+    response.data = f.read()
+    response.content_type = 'text/plain'
+    return 'aaaaaa'
 
 
-@app.errorhandler(404)
-def fourzerofour():
-  return render_template('404.html'), 404
+
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+    response = e.get_response()
+    response.data = json.dumps({
+        "code": e.code,
+        "name": e.name,
+        "description": e.description,
+    })
+    response.content_type = "application/json"
+    return response
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
