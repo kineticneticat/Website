@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, make_response, redirect, url_for
 import json
 from flask_sitemap import Sitemap
+from werkzeug.exceptions import HTTPException
 #aaaa
 app = Flask(__name__)
 ext = Sitemap(app=app)
@@ -93,12 +94,6 @@ def login():
     return render_template('login.html',
                            value=pyml['name'],
                            loggedin=loggedin(request))
-
-
-@app.route('/getcookie')
-def getcookie():
-    name = request.cookies.get('userID')
-    return '<h1>welcome ' + name + '</h1>'
 
 
 @app.route('/logout')
@@ -239,10 +234,14 @@ def tos():
         Logged_In = "False"
         pyml['name'] = "Login"
     print(pyml['name'])
+    try:
+      source=request.args['source']
+    except KeyError:
+      source = 'unknown'
     return render_template('tos.html',
                            value=pyml['name'],
                            loggedin=loggedin(request),
-                           source=request.args['source'])
+                           source=source)
 
 
 # except:
@@ -259,10 +258,14 @@ def prpo():
         Logged_In = "False"
         pyml['name'] = "Login"
     print(pyml['name'])
+    try:
+      source=request.args['source']
+    except KeyError:
+      source = 'unknown'
     return render_template('prpo.html',
                            value=pyml['name'],
                            loggedin=loggedin(request),
-                           source=request.args['source'])
+                           source=source)
 
 
 # except:
@@ -284,6 +287,27 @@ def account():
                            loggedin=loggedin(request),
                            test='aaaaaaaaaaaaaaa')
 
+
+@app.route('/robots.txt')
+def robots(e):
+  with open('templates/robots.txt') as f:
+    response = make_response()
+    response.data = f.read()
+    response.content_type = 'text/plain'
+    return 'aaaaaa'
+
+
+
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+    response = e.get_response()
+    response.data = json.dumps({
+        "code": e.code,
+        "name": e.name,
+        "description": e.description,
+    })
+    response.content_type = "application/json"
+    return response
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)

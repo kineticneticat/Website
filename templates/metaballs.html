@@ -20,6 +20,7 @@
   </style>
   <script type="text/javascript">
     let margin = 100
+    
     function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
     }
@@ -64,8 +65,10 @@
     }
 
     function mouseMove(evt) {
-      mouseX = evt.screenX;
-      mouseY = evt.screenY;
+      var canvas = document.getElementById("metaballCanvas");
+      var rect = canvas.getBoundingClientRect();
+      mouseX = evt.screenX - rect.left;
+      mouseY = evt.screenY - rect.top + -50;
     }
 
     let scrollAmt = 0
@@ -92,6 +95,7 @@
       ballY += (dy - 7) + scrollAmt;
       
       var canvas = document.getElementById("metaballCanvas");
+      var rect = canvas.getBoundingClientRect();
       var ctx = canvas.getContext("2d");
       ctx.canvas.width  = window.innerWidth;
 
