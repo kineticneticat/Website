@@ -288,26 +288,42 @@ def account():
                            test='aaaaaaaaaaaaaaa')
 
 
-@app.route('/robots.txt')
-def robots(e):
-  with open('templates/robots.txt') as f:
-    response = make_response()
-    response.data = f.read()
-    response.content_type = 'text/plain'
-    return 'aaaaaa'
+# @app.route('/robots.txt')
+# def robots(e):
+#   with open('templates/robots.txt') as f:
+#     response = make_response()
+#     response.data = f.read()
+#     response.content_type = 'text/plain'
+#     return 'aaaaaa'
 
 
 
 @app.errorhandler(HTTPException)
 def handle_exception(e):
-    response = e.get_response()
-    response.data = json.dumps({
-        "code": e.code,
-        "name": e.name,
-        "description": e.description,
-    })
-    response.content_type = "application/json"
-    return response
+    if e.code == 404:
+      return render_template('404.html')
+    else:
+      response = e.get_response()
+      response.data = json.dumps({
+          "code": e.code,
+          "name": e.name,
+          "description": e.description,
+      })
+      response.content_type = "application/json"
+      return response
 
+@app.route('/projects/triangle')
+def triangle():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml['name'] = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml['name'] = "Login"
+    print(pyml['name'])
+    return render_template('triangle.html',
+                           value=pyml['name'],
+                           loggedin=loggedin(request))
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)

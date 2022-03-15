@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Triangle{% endblock %}
+{% block Body %}
+<script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<div id="calculator" style="width: 600px; height: 400px; z-index: 0;"></div>
+<script>
+  var elt = document.getElementById('calculator');
+  var calculator = Desmos.GraphingCalculator(elt);
+  expressions = [
+    'y=x^2',
+    'x=y^2',
+    'polygon((0,0),(0,5),(5,2.5))'
+    ];
+  for (let x of expressions) {
+    calculator.setExpression({latex: x});
+  }
+</script>
+{% endblock %}
