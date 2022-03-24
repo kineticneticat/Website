@@ -9,6 +9,7 @@ python = "^3.8"
 replit = "^3.2.4"
 Flask = "^2.0.1"
 Flask-Sitemap = "^0.4.0"
+cryptography = "^36.0.2"
 
 [tool.poetry.dev-dependencies]
 

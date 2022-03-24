@@ -6,8 +6,19 @@
   --text-primary: #b6b6b6;
   --text-secondary: #ececec;
   --bg-primary: #23232e;
-  --bg-secondary: #141418;
+  --bg-secondary: #333333;
   --transition-speed: 600ms;
+}
+
+button {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: none;
+  transition: var(--transition-speed);
+}
+button:hover {
+  background-color: black;
+  color: var(--text-secondary);
 }
 
 body {

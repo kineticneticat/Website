@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for
+import pickle
 import json
 from flask_sitemap import Sitemap
 from werkzeug.exceptions import HTTPException
-#aaaa
+import hashlib
+
 app = Flask(__name__)
 ext = Sitemap(app=app)
 app.config['SITEMAP_INCLUDE_RULES_WITHOUT_PARAMS'] = True
@@ -10,6 +12,10 @@ app.config['SITEMAP_URL_SCHEME'] = 'https'
 app.config['SITEMAP_IGNORE_ENDPOINTS'] = '/prpo'
 pyml = {}
 
+def encrypt(data, salt):
+  m = hashlib.sha256()
+  m.update(bytes(salt + data, encoding='utf-8'))
+  return m.digest()
 
 def loggedin(request):
     if request.cookies.get('Logged_In') != 'True':
@@ -36,22 +42,24 @@ def setcookie():
     if request.method == 'POST':
         user = str(request.form['usrnm'])
         print('testt')
-        f = open('secrets/accounts.json')
-        accounts = f.read()
-        accounts_json = json.loads(accounts)
+        f = open('secrets/accounts', 'rb')
+        accounts = pickle.load(f)
         try:
-            accounts_json[user]['uname']
+            accounts[user]['uname']
             FailedLogin = 'no'
         except:
             FailedLogin = 'yes'
         finally:
             try:
-                passfinder = str(accounts_json[user]['pass'])
+                passfinder = accounts[user]['pass']
             except:
                 passfinder = None
-            usedpass = str(request.form['loginpass'])
-            print(f'pass : {passfinder}')
+            usedpass = encrypt(request.form['loginpass'], accounts[user]['uname'])
+            print(f'  pass : {passfinder}')
+            print(f'  pass : {type(passfinder)}')
             print(f'inpass : {usedpass}')
+            print(f'inpass : {type(usedpass)}')
+            print(f'match: {passfinder == usedpass}')
 
             if usedpass == passfinder and FailedLogin != 'yes':
                 Logged_In = "True"
@@ -107,7 +115,6 @@ def logout():
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-    try:
         passVerified = None
         accounts = {}
         if request.method == 'POST':
@@ -118,8 +125,12 @@ def signup():
                 passVerified = 'True'
             else:
                 passVerified = 'False'
-            f = open('secrets/accounts.json')
-            accounts = json.loads(f.read())
+            f = open('secrets/accounts', 'rb')
+            try:
+              accounts = pickle.load(f)
+            except EOFError as e:
+              accounts = {}
+              print(f'error:\n {e}')
             f.close()
             try:
                 accounts[newUN]
@@ -127,17 +138,14 @@ def signup():
                 print('a')
             finally:
                 if passVerified == 'True':
-                    accounts[newUN] = {"uname": newUN, "pass": pwd}
-                    f = open('secrets/accounts.json', 'w')
-                    f.write(json.dumps(accounts, indent=2))
+                    accounts[newUN] = {"uname": newUN, "pass": encrypt(pwd, newUN)}
+                    f = open('secrets/accounts', 'wb')
+                    pickle.dump(accounts, f)
                     f.flush()
                     f.close()
         return render_template('signup.html',
                                loggedin=loggedin(request),
                                isPassVerified=passVerified)
-    except:
-        return 'this page broke lol'
-
 
 @app.route('/projects')
 def projects():
@@ -146,7 +154,6 @@ def projects():
 
 @app.route('/projects/metaballs')
 def metaballs():
-    try:
         Logged_In = request.cookies.get('Logged_In')
         if Logged_In == "True":
             pyml['name'] = request.cookies.get('userID')
@@ -157,21 +164,24 @@ def metaballs():
         return render_template('metaballs.html',
                                value=pyml['name'],
                                loggedin=loggedin(request))
-    except:
-        return 'this page broke lol'
 
 
 @app.route('/what')
 def what():
-    try:
-        return render_template('what.html')
-    except:
-        return 'this page broke lol'
+        Logged_In = request.cookies.get('Logged_In')
+        if Logged_In == "True":
+            pyml['name'] = request.cookies.get('userID')
+        else:
+            Logged_In = "False"
+            pyml['name'] = "Login"
+        print(pyml['name'])
+        return render_template('what.html',
+                               value=pyml['name'],
+                               loggedin=loggedin(request))
 
 
 @app.route('/projects/bezier')
 def bezier():
-    try:
         Logged_In = request.cookies.get('Logged_In')
         if Logged_In == "True":
             pyml['name'] = request.cookies.get('userID')
@@ -182,9 +192,6 @@ def bezier():
         return render_template('bezier.html',
                                value=pyml['name'],
                                loggedin=loggedin(request))
-    except:
-        return 'this page broke lol'
-
 
 # @app.errorhandler(404)
 # def error404():

@@ -39,7 +39,7 @@
   <nav class="navbar dark" style='z-index: 1;'>
     <ul class="navbar-nav">
       <li class="logo">
-        <a href="#" class="nav-link">
+        <a href="/" class="nav-link">
           <span class="link-text logo-text">Kineticcat_</span>
           <img id="logoIcon" src="../static/images/logoPink.png" alt="//\*" width="64" height="64">
         </a>
@@ -73,10 +73,11 @@
           <span class="link-text">{{ name }}</span>
         </a>
           {% else %}
-        <a href="/login" class="nav-link">
-          <span id="icon" class="material-icons-round">login</span>
-          <span class="link-text">Login</span>
-        </a>
+          <div class="nav-link">
+            <span id="icon" class="material-icons-round">login</span>
+            <a href="/login" class="nav-link"><span class="link-text">Login</span></a>
+            <a href='/signup' class="nav-link"><span class="link-text">Signup</span></a>
+          </div>
           {% endif %}
       </li>
 
