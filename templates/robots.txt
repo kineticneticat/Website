@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /secrets/
-Disallow: /getcookies
+{% for url in urls %}
+Disallow: {{ url }}
+{% endfor %}
 
 Sitemap: https://www.kineticcat.ml/sitemap.xml

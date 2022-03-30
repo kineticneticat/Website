@@ -7,7 +7,7 @@ import hashlib
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
-app.config['SITEMAP_IGNORE_ENDPOINTS'] = ['/prpo']
+app.config['SITEMAP_IGNORE_ENDPOINTS'] = ['/prpo', '/tos']
 print(app.config)
 pyml = None
 
@@ -292,15 +292,6 @@ def account():
                            loggedin=loggedin(request),
                            test='aaaaaaaaaaaaaaa')
 
-
-# @app.route('/robots.txt')
-# def robots(e):
-#   with open('templates/robots.txt') as f:
-#     response = make_response()
-#     response.data = f.read()
-#     response.content_type = 'text/plain'
-#     return 'aaaaaa'
-
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
     arguments = rule.arguments if rule.arguments is not None else ()
@@ -318,6 +309,17 @@ def sitemap():
     xml = render_template('sitemap.xml', urls=urls, base_url='https://kineticcat.ml', mimetype='text/xml')
 
     return Response(xml, mimetype='text/xml')
+
+@app.route('/robots.txt')
+def robots():
+    urls = []
+    for rule in app.url_map.iter_rules():
+        if "GET" in rule.methods and has_no_empty_params(rule):
+            url = url_for(rule.endpoint, **(rule.defaults or {}))
+            if url in app.config['SITEMAP_IGNORE_ENDPOINTS']:
+                urls.append(url)
+    txt = render_template('robots.txt', urls=urls, base_url='https://kineticcat.ml', mimetype='text/plain')
+    return Response(txt, mimetype='text/plain')
 
 @app.errorhandler(HTTPException)
 def handle_exception(e):
