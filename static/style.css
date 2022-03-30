@@ -385,11 +385,15 @@ input[type=submit]:hover {
   opacity: 0.5;
 }
 
-#cookie-div {
+#cookie-div-out {
   position: absolute;
   width: 100%;
   display: flex;
   justify-content: center;
   bottom: 10px;
-  background-color: red;
+}
+
+#cookie-div {
+  padding: 1em;
+  background-color: white;
 }
