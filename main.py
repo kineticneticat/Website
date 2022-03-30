@@ -7,8 +7,7 @@ import hashlib
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
-app.config['SITEMAP_INCLUDE_RULES_WITHOUT_PARAMS'] = True
-app.config['SITEMAP_URL_SCHEME'] = 'https'
+app.config['SITEMAP_IGNORE_ENDPOINTS'] = ['/prpo']
 print(app.config)
 pyml = None
 
@@ -56,8 +55,7 @@ def setcookie():
                 passfinder = accounts[user]['pass']
             except:
                 passfinder = None
-            usedpass = encrypt(request.form['loginpass'],
-                               accounts[user]['uname'])
+            usedpass = encrypt(request.form['loginpass'], accounts[user]['uname'])
             print(f'  pass : {passfinder}')
             print(f'  pass : {type(passfinder)}')
             print(f'inpass : {usedpass}')
@@ -303,21 +301,23 @@ def account():
 #     response.content_type = 'text/plain'
 #     return 'aaaaaa'
 
-@app.route('/sitemap.xml')
-def site_map():
-  
-  url = 'https://www.kineticcat.ml'
-  reqs = requests.get(url)
-  soup = BeautifulSoup(reqs.text, 'html.parser')
-   
-  urls = []
-  for link in soup.find_all('a', href=True):
-    urls.append(link['href'])
-  print(urls) 
-  xml = render_template('sitemap.xml', urls=urls, base_url='https://kineticcat.ml', mimetype='text/xml')
+def has_no_empty_params(rule):
+    defaults = rule.defaults if rule.defaults is not None else ()
+    arguments = rule.arguments if rule.arguments is not None else ()
+    return len(defaults) >= len(arguments)
 
-  return Response(xml, mimetype='text/xml')
-  
+@app.route('/sitemap.xml')
+def sitemap():
+
+    urls = []
+    for rule in app.url_map.iter_rules():
+        if "GET" in rule.methods and has_no_empty_params(rule):
+            url = url_for(rule.endpoint, **(rule.defaults or {}))
+            if url not in app.config['SITEMAP_IGNORE_ENDPOINTS']:
+                urls.append(url)
+    xml = render_template('sitemap.xml', urls=urls, base_url='https://kineticcat.ml', mimetype='text/xml')
+
+    return Response(xml, mimetype='text/xml')
 
 @app.errorhandler(HTTPException)
 def handle_exception(e):

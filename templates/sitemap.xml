@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>{{ base_url }}</loc>
-  </url>
-  {%- for url in urls %}
+  {% for url in urls %}
   <url>
     <loc>{{ base_url }}{{ url }}</loc>
   </url>
-  {%- endfor -%}
-</Urlset>
+  {% endfor %}
+</urlset>
