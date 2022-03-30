@@ -384,3 +384,12 @@ input[type=submit]:hover {
 .projectItem:hover {
   opacity: 0.5;
 }
+
+#cookie-div {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  bottom: 10px;
+  background-color: red;
+}

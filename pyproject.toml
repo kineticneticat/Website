@@ -10,6 +10,8 @@ replit = "^3.2.4"
 Flask = "^2.0.1"
 Flask-Sitemap = "^0.4.0"
 cryptography = "^36.0.2"
+Flask-FlatPages = "^0.8.1"
+bs4 = "^0.0.1"
 
 [tool.poetry.dev-dependencies]
 

@@ -1,21 +1,23 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for
+from flask import Flask, render_template, request, make_response, redirect, url_for, Response
+import requests
 import pickle
 import json
-from flask_sitemap import Sitemap
 from werkzeug.exceptions import HTTPException
 import hashlib
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
-ext = Sitemap(app=app)
 app.config['SITEMAP_INCLUDE_RULES_WITHOUT_PARAMS'] = True
 app.config['SITEMAP_URL_SCHEME'] = 'https'
-app.config['SITEMAP_IGNORE_ENDPOINTS'] = '/prpo'
-pyml = {}
+print(app.config)
+pyml = None
+
 
 def encrypt(data, salt):
-  m = hashlib.sha256()
-  m.update(bytes(salt + data, encoding='utf-8'))
-  return m.digest()
+    m = hashlib.sha256()
+    m.update(bytes(salt + data, encoding='utf-8'))
+    return m.digest()
+
 
 def loggedin(request):
     if request.cookies.get('Logged_In') != 'True':
@@ -28,12 +30,12 @@ def loggedin(request):
 def user_check(page):
     Logged_In = request.cookies.get('Logged_In')
     if Logged_In == True:
-        pyml['name'] = request.cookies.get('userID')
+        pyml = request.cookies.get('userID')
     else:
         Logged_In = "False"
-        pyml['name'] = "Login"
-    print(pyml['name'])
-    return [page, pyml['name'], Logged_In]
+        pyml = "Login"
+    print(pyml)
+    return [page, pyml, Logged_In]
 
 
 @app.route('/setcookie', methods=['POST'])
@@ -54,7 +56,8 @@ def setcookie():
                 passfinder = accounts[user]['pass']
             except:
                 passfinder = None
-            usedpass = encrypt(request.form['loginpass'], accounts[user]['uname'])
+            usedpass = encrypt(request.form['loginpass'],
+                               accounts[user]['uname'])
             print(f'  pass : {passfinder}')
             print(f'  pass : {type(passfinder)}')
             print(f'inpass : {usedpass}')
@@ -82,13 +85,13 @@ def home():
     #    try:
     Logged_In = request.cookies.get('Logged_In')
     if Logged_In == "True":
-        pyml['name'] = request.cookies.get('userID')
+        pyml = request.cookies.get('userID')
     else:
         Logged_In = "False"
-        pyml['name'] = "Login"
-    print(pyml['name'])
+        pyml = "Login"
+    print(pyml)
     return render_template('home.html',
-                           name=pyml['name'],
+                           name=pyml,
                            loggedin=loggedin(request),
                            dark=isDark)
 
@@ -100,7 +103,7 @@ def home():
 @app.route('/login')
 def login():
     return render_template('login.html',
-                           value=pyml['name'],
+                           value=pyml,
                            loggedin=loggedin(request))
 
 
@@ -115,37 +118,38 @@ def logout():
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-        passVerified = None
-        accounts = {}
-        if request.method == 'POST':
-            newUN = request.form['newUN']
-            pwd = request.form['signuppass']
-            repass = request.form['repass']
-            if pwd == repass:
-                passVerified = 'True'
-            else:
-                passVerified = 'False'
-            f = open('secrets/accounts', 'rb')
-            try:
-              accounts = pickle.load(f)
-            except EOFError as e:
-              accounts = {}
-              print(f'error:\n {e}')
-            f.close()
-            try:
-                accounts[newUN]
-            except:
-                print('a')
-            finally:
-                if passVerified == 'True':
-                    accounts[newUN] = {"uname": newUN, "pass": encrypt(pwd, newUN)}
-                    f = open('secrets/accounts', 'wb')
-                    pickle.dump(accounts, f)
-                    f.flush()
-                    f.close()
-        return render_template('signup.html',
-                               loggedin=loggedin(request),
-                               isPassVerified=passVerified)
+    passVerified = None
+    accounts = {}
+    if request.method == 'POST':
+        newUN = request.form['newUN']
+        pwd = request.form['signuppass']
+        repass = request.form['repass']
+        if pwd == repass:
+            passVerified = 'True'
+        else:
+            passVerified = 'False'
+        f = open('secrets/accounts', 'rb')
+        try:
+            accounts = pickle.load(f)
+        except EOFError as e:
+            accounts = {}
+            print(f'error:\n {e}')
+        f.close()
+        try:
+            accounts[newUN]
+        except:
+            print('a')
+        finally:
+            if passVerified == 'True':
+                accounts[newUN] = {"uname": newUN, "pass": encrypt(pwd, newUN)}
+                f = open('secrets/accounts', 'wb')
+                pickle.dump(accounts, f)
+                f.flush()
+                f.close()
+    return render_template('signup.html',
+                           loggedin=loggedin(request),
+                           isPassVerified=passVerified)
+
 
 @app.route('/projects')
 def projects():
@@ -154,44 +158,43 @@ def projects():
 
 @app.route('/projects/metaballs')
 def metaballs():
-        Logged_In = request.cookies.get('Logged_In')
-        if Logged_In == "True":
-            pyml['name'] = request.cookies.get('userID')
-        else:
-            Logged_In = "False"
-            pyml['name'] = "Login"
-        print(pyml['name'])
-        return render_template('metaballs.html',
-                               value=pyml['name'],
-                               loggedin=loggedin(request))
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    print(pyml)
+    return render_template('metaballs.html',
+                           value=pyml,
+                           loggedin=loggedin(request))
 
 
 @app.route('/what')
 def what():
-        Logged_In = request.cookies.get('Logged_In')
-        if Logged_In == "True":
-            pyml['name'] = request.cookies.get('userID')
-        else:
-            Logged_In = "False"
-            pyml['name'] = "Login"
-        print(pyml['name'])
-        return render_template('what.html',
-                               value=pyml['name'],
-                               loggedin=loggedin(request))
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    print(pyml)
+    return render_template('what.html', value=pyml, loggedin=loggedin(request))
 
 
 @app.route('/projects/bezier')
 def bezier():
-        Logged_In = request.cookies.get('Logged_In')
-        if Logged_In == "True":
-            pyml['name'] = request.cookies.get('userID')
-        else:
-            Logged_In = "False"
-            pyml['name'] = "Login"
-        print(pyml['name'])
-        return render_template('bezier.html',
-                               value=pyml['name'],
-                               loggedin=loggedin(request))
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    print(pyml)
+    return render_template('bezier.html',
+                           value=pyml,
+                           loggedin=loggedin(request))
+
 
 # @app.errorhandler(404)
 # def error404():
@@ -203,29 +206,26 @@ def cube():
     # try:
     Logged_In = request.cookies.get('Logged_In')
     if Logged_In == "True":
-        pyml['name'] = request.cookies.get('userID')
+        pyml = request.cookies.get('userID')
     else:
         Logged_In = "False"
-        pyml['name'] = "Login"
-    print(pyml['name'])
-    return render_template('cube.html',
-                           value=pyml['name'],
-                           loggedin=loggedin(request))
+        pyml = "Login"
+    print(pyml)
+    return render_template('cube.html', value=pyml, loggedin=loggedin(request))
+
 
 @app.route('/projects/web')
 def web():
     # try:
     Logged_In = request.cookies.get('Logged_In')
     if Logged_In == "True":
-        pyml['name'] = request.cookies.get('userID')
+        pyml = request.cookies.get('userID')
     else:
         Logged_In = "False"
-        pyml['name'] = "Login"
-    print(pyml['name'])
-    return render_template('web.html',
-                           value=pyml['name'],
-                           loggedin=loggedin(request))
-  
+        pyml = "Login"
+    print(pyml)
+    return render_template('web.html', value=pyml, loggedin=loggedin(request))
+
 
 # except:
 #     return 'this page broke lol'
@@ -236,17 +236,17 @@ def tos():
     # try:
     Logged_In = request.cookies.get('Logged_In')
     if Logged_In == "True":
-        pyml['name'] = request.cookies.get('userID')
+        pyml = request.cookies.get('userID')
     else:
         Logged_In = "False"
-        pyml['name'] = "Login"
-    print(pyml['name'])
+        pyml = "Login"
+    print(pyml)
     try:
-      source=request.args['source']
+        source = request.args['source']
     except KeyError:
-      source = 'unknown'
+        source = 'unknown'
     return render_template('tos.html',
-                           value=pyml['name'],
+                           value=pyml,
                            loggedin=loggedin(request),
                            source=source)
 
@@ -260,17 +260,17 @@ def prpo():
     # try:
     Logged_In = request.cookies.get('Logged_In')
     if Logged_In == "True":
-        pyml['name'] = request.cookies.get('userID')
+        pyml = request.cookies.get('userID')
     else:
         Logged_In = "False"
-        pyml['name'] = "Login"
-    print(pyml['name'])
+        pyml = "Login"
+    print(pyml)
     try:
-      source=request.args['source']
+        source = request.args['source']
     except KeyError:
-      source = 'unknown'
+        source = 'unknown'
     return render_template('prpo.html',
-                           value=pyml['name'],
+                           value=pyml,
                            loggedin=loggedin(request),
                            source=source)
 
@@ -284,13 +284,13 @@ def account():
     # try:
     Logged_In = request.cookies.get('Logged_In')
     if Logged_In == "True":
-        pyml['name'] = request.cookies.get('userID')
+        pyml = request.cookies.get('userID')
     else:
         Logged_In = "False"
-        pyml['name'] = "Login"
-    print(pyml['name'])
+        pyml = "Login"
+    print(pyml)
     return render_template('account.html',
-                           name=pyml['name'],
+                           name=pyml,
                            loggedin=loggedin(request),
                            test='aaaaaaaaaaaaaaa')
 
@@ -303,34 +303,61 @@ def account():
 #     response.content_type = 'text/plain'
 #     return 'aaaaaa'
 
+@app.route('/sitemap.xml')
+def site_map():
+  
+  url = 'https://www.kineticcat.ml'
+  reqs = requests.get(url)
+  soup = BeautifulSoup(reqs.text, 'html.parser')
+   
+  urls = []
+  for link in soup.find_all('a', href=True):
+    urls.append(link['href'])
+  print(urls) 
+  xml = render_template('sitemap.xml', urls=urls, base_url='https://kineticcat.ml', mimetype='text/xml')
 
+  return Response(xml, mimetype='text/xml')
+  
 
 @app.errorhandler(HTTPException)
 def handle_exception(e):
     if e.code == 404:
-      return render_template('404.html')
+        return render_template('404.html')
     else:
-      response = e.get_response()
-      response.data = json.dumps({
-          "code": e.code,
-          "name": e.name,
-          "description": e.description,
-      })
-      response.content_type = "application/json"
-      return response
+        response = e.get_response()
+        response.data = json.dumps({
+            "code": e.code,
+            "name": e.name,
+            "description": e.description,
+        })
+        response.content_type = "application/json"
+        return response
+
 
 @app.route('/projects/triangle')
 def triangle():
     # try:
     Logged_In = request.cookies.get('Logged_In')
     if Logged_In == "True":
-        pyml['name'] = request.cookies.get('userID')
+        pyml = request.cookies.get('userID')
     else:
         Logged_In = "False"
-        pyml['name'] = "Login"
-    print(pyml['name'])
-    return render_template('triangle.html',
-                           value=pyml['name'],
+        pyml = "Login"
+    return render_template('triangle.html', value=pyml)
+
+
+@app.route('/cookies')
+def cookies():
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('cookie_desc.html',
+                           value=pyml,
                            loggedin=loggedin(request))
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
