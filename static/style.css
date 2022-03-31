@@ -385,15 +385,38 @@ input[type=submit]:hover {
   opacity: 0.5;
 }
 
+/* cookie popup */
 #cookie-div-out {
   position: absolute;
   width: 100%;
   display: flex;
   justify-content: center;
-  bottom: 10px;
+  bottom: 1em;
 }
 
 #cookie-div {
+  position: relative;
+  top: 0px;
   padding: 1em;
   background-color: white;
+}
+
+#cookie-div.popdown {
+  animation: popdown 2s ease-in-out;
+  display: none;
+}
+
+#cookie-div.popup {
+  animation: popup 2s ease-in-out;
+  display: inline;
+}
+
+@keyframes popup {
+  from { opacity: 0%; display: none; }
+  to { opacity: 100%; display: inline; }
+}
+
+@keyframes popdown {
+  from { opacity: 100%; display: inline; }
+  to { opacity: 0%; display: none; }
 }

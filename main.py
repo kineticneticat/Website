@@ -1,14 +1,11 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for, Response
-import requests
 import pickle
 import json
 from werkzeug.exceptions import HTTPException
 import hashlib
-from bs4 import BeautifulSoup
 
 app = Flask(__name__)
-app.config['SITEMAP_IGNORE_ENDPOINTS'] = ['/prpo', '/tos']
-print(app.config)
+app.config['SITEMAP_IGNORE_ENDPOINTS'] = ['/prpo', '/tos', '/debug']
 pyml = None
 
 
@@ -359,7 +356,23 @@ def cookies():
     return render_template('cookie_desc.html',
                            value=pyml,
                            loggedin=loggedin(request))
+  
+@app.route('/debug')
+def debug():
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
 
+
+    urls = []
+    for rule in app.url_map.iter_rules():
+        if "GET" in rule.methods and has_no_empty_params(rule):
+            url = url_for(rule.endpoint, **(rule.defaults or {}))
+            urls.append(url)
+    return render_template('debug.html', value=pyml,loggedin=loggedin(request), urls=urls)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)

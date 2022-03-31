@@ -3,11 +3,14 @@
 {% block Body %}
 <h1>Cookie Descriptions!</h1>
 <p>Just a description of the cookies used for this website!</p>
-<ul>
-  <li>cf_clearance is proof that you have passed the cloudflare challenge.</li>
-  <li>the cookies beginning with _ga are for google analytics</li>
-  <li>userID stores your current username.</li>
-  <li>Logged_In stores whether you're logged in or not(for the account/login switching!)</li>
+<ul style='list-style-type: none;'>
+  <li>=> cf_clearance is proof that you have passed the cloudflare challenge.</li>
+  <li>=> the cookies beginning with _ga are for google analytics</li>
+  <li>=> userID stores your current username.</li>
+  <li>=> Logged_In stores whether you're logged in or not(for the account/login switching!)</li>
+  <li>=> cookies_accepted stores if you have consented to cookies or not</li>
   
 </ul>
+<br>
+<p>This website does break if cookies are disabled so until there is disablable cookies there wont be a reject button!</p>
 {% endblock %}
