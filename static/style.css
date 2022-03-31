@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
 :root {
   font-size: 16px;
   font-family: 'Open Sans';
@@ -15,8 +16,25 @@ button {
   color: var(--text-primary);
   border: none;
   transition: var(--transition-speed);
+  font-size: 16px;
+  padding: 1rem;
 }
+
 button:hover {
+  background-color: black;
+  color: var(--text-secondary);
+}
+
+input[type="submit"] {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: none;
+  transition: var(--transition-speed);
+  font-size: 16px;
+  padding: 1rem;
+}
+
+input[type='submit']:hover {
   background-color: black;
   color: var(--text-secondary);
 }
@@ -131,8 +149,7 @@ main {
   transition: var(--transition-speed);
 }
 
-.logo-text
-{
+.logo-text {
   display: inline;
   position: absolute;
   left: -999px;
@@ -144,13 +161,23 @@ main {
 }
 
 @keyframes fadeout {
-  0% { opacity: 1 }
-  100% { opacity: 0 }
+  0% {
+    opacity: 1
+  }
+
+  100% {
+    opacity: 0
+  }
 }
 
 @keyframes fadein {
-  0% { opacity: 0 }
-  100% { opacity: 1 }
+  0% {
+    opacity: 0
+  }
+
+  100% {
+    opacity: 1
+  }
 }
 
 .navbar .logo img {
@@ -212,13 +239,11 @@ main {
     display: inline;
   }
 
-  .navbar:hover .logo svg
-  {
+  .navbar:hover .logo svg {
     margin-left: 11rem;
   }
 
-  .navbar:hover .logo-text
-  {
+  .navbar:hover .logo-text {
     left: 0px;
   }
 }
@@ -256,7 +281,7 @@ main {
 /*dark theme %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
 
 .dark {
-  background-color:#333;
+  background-color: #333;
   color: #fff
 }
 
@@ -270,45 +295,52 @@ main {
 }
 
 .material-icons {
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
   border: none;
 }
 
 
 /*basic font*/
 .text {
-	font-family: Arial
+  font-family: Arial
 }
+
 .redtext {
-	font-family: Arial, Helvetica, sans-serif;
-	color: #ff0000
+  font-family: Arial, Helvetica, sans-serif;
+  color: #ff0000
 }
 
 /* positioning */
 .left {
-	float: left
+  float: left
 }
+
 .right {
-	float: right
+  float: right
 }
+
 .vcentre {
   position: absolute;
   top: 50%;
 }
+
 .hcentre {
   position: absolute;
   text-align: centre;
   width: 100%;
 }
+
 .centre {
   top: 50%;
   width: 100%;
   text-align: center;
 }
+
 .top {
   position: absolute;
-  top: 8px; 
+  top: 8px;
 }
+
 .bottom {
   position: absolute;
   bottom: 8px;
@@ -325,32 +357,12 @@ input[type=text] {
   color: white;
   transition: width 0.4s ease-in-out;
 }
+
 input[type=text]:focus {
   background-color: #3CBC8D;
-	width: 100%;
+  width: 100%;
 }
-input[type=submit] {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  text-decoration: none;
-  margin: 4px 2px;
-  cursor: pointer;
-	font-family: Arial;
-	font-size: 16px
-}
-input[type=submit]:hover {
-  background-color: rgb(59, 136, 61);
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  text-decoration: none;
-  margin: 4px 2px;
-  cursor: pointer;
-	font-family: Arial;
-	font-size: 16px
-}
+
 #cubehome {
   position: absolute;
   float: right;
@@ -429,11 +441,25 @@ input[type=submit]:hover {
 }
 
 @keyframes popup {
-  from { opacity: 0%; display: none; }
-  to { opacity: 100%; display: inline; }
+  from {
+    opacity: 0%;
+    display: none;
+  }
+
+  to {
+    opacity: 100%;
+    display: inline;
+  }
 }
 
 @keyframes popdown {
-  from { opacity: 100%; display: inline; }
-  to { opacity: 0%; display: none; }
+  from {
+    opacity: 100%;
+    display: inline;
+  }
+
+  to {
+    opacity: 0%;
+    display: none;
+  }
 }

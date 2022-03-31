@@ -52,7 +52,8 @@ def setcookie():
                 passfinder = accounts[user]['pass']
             except:
                 passfinder = None
-            usedpass = encrypt(request.form['loginpass'], accounts[user]['uname'])
+            usedpass = encrypt(
+                request.form['loginpass'], accounts[user]['uname'])
             print(f'  pass : {passfinder}')
             print(f'  pass : {type(passfinder)}')
             print(f'inpass : {usedpass}')
@@ -289,10 +290,12 @@ def account():
                            loggedin=loggedin(request),
                            test='aaaaaaaaaaaaaaa')
 
+
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
+
 
 @app.route('/sitemap.xml')
 def sitemap():
@@ -303,9 +306,11 @@ def sitemap():
             url = url_for(rule.endpoint, **(rule.defaults or {}))
             if url not in app.config['SITEMAP_IGNORE_ENDPOINTS']:
                 urls.append(url)
-    xml = render_template('sitemap.xml', urls=urls, base_url='https://kineticcat.ml', mimetype='text/xml')
+    xml = render_template('sitemap.xml', urls=urls,
+                          base_url='https://kineticcat.ml', mimetype='text/xml')
 
     return Response(xml, mimetype='text/xml')
+
 
 @app.route('/robots.txt')
 def robots():
@@ -315,8 +320,10 @@ def robots():
             url = url_for(rule.endpoint, **(rule.defaults or {}))
             if url in app.config['SITEMAP_IGNORE_ENDPOINTS']:
                 urls.append(url)
-    txt = render_template('robots.txt', urls=urls, base_url='https://kineticcat.ml', mimetype='text/plain')
+    txt = render_template('robots.txt', urls=urls,
+                          base_url='https://kineticcat.ml', mimetype='text/plain')
     return Response(txt, mimetype='text/plain')
+
 
 @app.errorhandler(HTTPException)
 def handle_exception(e):
@@ -356,7 +363,8 @@ def cookies():
     return render_template('cookie_desc.html',
                            value=pyml,
                            loggedin=loggedin(request))
-  
+
+
 @app.route('/debug')
 def debug():
     Logged_In = request.cookies.get('Logged_In')
@@ -366,13 +374,13 @@ def debug():
         Logged_In = "False"
         pyml = "Login"
 
-
     urls = []
     for rule in app.url_map.iter_rules():
         if "GET" in rule.methods and has_no_empty_params(rule):
             url = url_for(rule.endpoint, **(rule.defaults or {}))
             urls.append(url)
-    return render_template('debug.html', value=pyml,loggedin=loggedin(request), urls=urls)
+    return render_template('debug.html', value=pyml, loggedin=loggedin(request), urls=urls)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)

@@ -17,9 +17,9 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-22N6G1Y5TC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-  
+
     gtag('config', 'G-22N6G1Y5TC');
   </script>
   <!-- analytics stuff end -->
@@ -29,7 +29,7 @@
   <link rel="script" href="../static/js/script.js">
   <link rel="stylesheet" href="../static/style.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" rel="stylesheet" />
   {% block head %}{% endblock %}
 </head>
 
@@ -74,36 +74,37 @@
       </li>
 
       <li class="nav-item">
-          {% if loggedin == "True" %}
+        {% if loggedin == "True" %}
         <a href="/account" class="nav-link">
           <span id="icon" class="material-icons-round">account_circle</span>
           <span class="link-text">{{ name }}</span>
         </a>
-          {% else %}
-          <div class="nav-link">
-            <span id="icon" class="material-icons-round">login</span>
-            <a href="/login" class="nav-link"><span class="link-text">Login</span></a>
-            <a href='/signup' class="nav-link"><span class="link-text">Signup</span></a>
-          </div>
-          {% endif %}
+        {% else %}
+        <div class="nav-link">
+          <a href="/signup"><span id="icon" class="material-icons-round">login</span></a>
+          <a href="/login" class="nav-link"><span class="link-text">Login</span></a>
+          <a href='/signup' class="nav-link"><span class="link-text">Signup</span></a>
+        </div>
+        {% endif %}
       </li>
 
     </ul>
   </nav>
 
   <script src='../static/js/cookie_popup.js'></script>
-  
+
   <div id='cookie-div-out'>
     <div id="cookie-div" class='popdown'>
-      This website uses cookies which you can learn about <button style="font-size: 1em;" onclick='window.location.href="{{ url_for('cookies') }}"'>here</button>
+      <!-- @ts-ignoe -->
+      This website uses cookies which you can learn about <button style="font-size: 1em;" onclick=window.location.href="{{ url_for('cookies') }}">here</button>
       <br>
-      <button style="font-size: 1em;" onclick='cookie_accept();'>Accept</button>
+      <button style="font-size: 1em;" onclick;='cookie_accept();'>Accept</button>
     </div>
   </div>
   <main id='main'>
-  {% block Body %}{% endblock %}
+    {% block Body %}{% endblock %}
   </main>
-  
+
   <!-- <footer class="bottom hcentre" >
     <div clas></div>
      testing testing 1 2 3
