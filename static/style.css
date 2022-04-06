@@ -144,11 +144,6 @@ main {
   width: 100%;
 }
 
-.logo svg {
-  transform: rotate(0deg);
-  transition: var(--transition-speed);
-}
-
 .logo-text {
   display: inline;
   position: absolute;
@@ -237,6 +232,7 @@ main {
 
   .navbar:hover .link-text {
     display: inline;
+    transition: var(--transition-speed);
   }
 
   .navbar:hover .logo svg {

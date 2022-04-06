@@ -6,6 +6,7 @@ import hashlib
 
 app = Flask(__name__)
 app.config['SITEMAP_IGNORE_ENDPOINTS'] = ['/prpo', '/tos', '/debug']
+app.config['ROBOTS_IGNORE_ENDPOINTS'] = []
 pyml = None
 
 
@@ -52,8 +53,8 @@ def setcookie():
                 passfinder = accounts[user]['pass']
             except:
                 passfinder = None
-            usedpass = encrypt(
-                request.form['loginpass'], accounts[user]['uname'])
+            usedpass = encrypt(request.form['loginpass'],
+                               accounts[user]['uname'])
             print(f'  pass : {passfinder}')
             print(f'  pass : {type(passfinder)}')
             print(f'inpass : {usedpass}')
@@ -178,25 +179,6 @@ def what():
     return render_template('what.html', value=pyml, loggedin=loggedin(request))
 
 
-@app.route('/projects/bezier')
-def bezier():
-    Logged_In = request.cookies.get('Logged_In')
-    if Logged_In == "True":
-        pyml = request.cookies.get('userID')
-    else:
-        Logged_In = "False"
-        pyml = "Login"
-    print(pyml)
-    return render_template('bezier.html',
-                           value=pyml,
-                           loggedin=loggedin(request))
-
-
-# @app.errorhandler(404)
-# def error404():
-#   return '404', 404
-
-
 @app.route('/projects/cube')
 def cube():
     # try:
@@ -244,7 +226,8 @@ def tos():
     return render_template('tos.html',
                            value=pyml,
                            loggedin=loggedin(request),
-                           source=source)
+                           source=source,
+                           noindex='True')
 
 
 # except:
@@ -268,7 +251,8 @@ def prpo():
     return render_template('prpo.html',
                            value=pyml,
                            loggedin=loggedin(request),
-                           source=source)
+                           source=source,
+                           noindex='True')
 
 
 # except:
@@ -306,22 +290,20 @@ def sitemap():
             url = url_for(rule.endpoint, **(rule.defaults or {}))
             if url not in app.config['SITEMAP_IGNORE_ENDPOINTS']:
                 urls.append(url)
-    xml = render_template('sitemap.xml', urls=urls,
-                          base_url='https://kineticcat.ml', mimetype='text/xml')
+    xml = render_template('sitemap.xml',
+                          urls=urls,
+                          base_url='https://kineticcat.ml',
+                          mimetype='text/xml')
 
     return Response(xml, mimetype='text/xml')
 
 
 @app.route('/robots.txt')
 def robots():
-    urls = []
-    for rule in app.url_map.iter_rules():
-        if "GET" in rule.methods and has_no_empty_params(rule):
-            url = url_for(rule.endpoint, **(rule.defaults or {}))
-            if url in app.config['SITEMAP_IGNORE_ENDPOINTS']:
-                urls.append(url)
-    txt = render_template('robots.txt', urls=urls,
-                          base_url='https://kineticcat.ml', mimetype='text/plain')
+    txt = render_template('robots.txt',
+                          urls=app.config['ROBOTS_IGNORE_ENDPOINTS'],
+                          base_url='https://kineticcat.ml',
+                          mimetype='text/plain')
     return Response(txt, mimetype='text/plain')
 
 
@@ -379,7 +361,11 @@ def debug():
         if "GET" in rule.methods and has_no_empty_params(rule):
             url = url_for(rule.endpoint, **(rule.defaults or {}))
             urls.append(url)
-    return render_template('debug.html', value=pyml, loggedin=loggedin(request), urls=urls)
+    return render_template('debug.html',
+                           value=pyml,
+                           loggedin=loggedin(request),
+                           urls=urls,
+                           noindex='True')
 
 
 if __name__ == '__main__':

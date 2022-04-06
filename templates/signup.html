@@ -1,14 +1,22 @@
 {%extends 'base.html'%}
 {% block title %} Signup {% endblock %}
+{% block head %}
+<script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
 {% block Body %}
-<form action="/signup" method="POST">
+<script>
+ function onSubmit(token) {
+   document.getElementById("signupForm").submit();
+ }
+</script>
+<form action="/signup" method="POST" id='signupForm'>
 	<p>
 	<h3 class="text">Enter Username & Password</h3>
 	</p>
 	<p class="text"><input class="input" placeholder="Username" type='text' name='newUN' required /></p>
 	<p class="text"><input placeholder="Password" type='password' name="signuppass" required /></p>
 	<p class="text"><input placeholder="Re-enter Password" type="password" name="repass" required></p>
-	<p class="text"><input class="button" type='submit' value='Signup' onclick='window.loction.href = "/"' /></p>
-	<button onclick="window.location.href='/login'">Login</button>
+  <p class="text"> <button class="g-recaptcha" data-sitekey="6LcKZk4fAAAAAHoi7bHdxi8hkDVOkl5_w8LFExBJ" data-callback='onSubmit' data-action='submit'>Submit</button> </p>
 </form>
+<button onclick="window.location.href='/login'">Login instead!</button>
 {% endblock %}
