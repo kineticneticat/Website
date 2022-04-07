@@ -333,6 +333,17 @@ def triangle():
         pyml = "Login"
     return render_template('triangle.html', value=pyml)
 
+@app.route('/projects/iocircle')
+def iocircle():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('iocircle.html', value=pyml)
+
 
 @app.route('/cookies')
 def cookies():
