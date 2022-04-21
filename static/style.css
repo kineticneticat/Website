@@ -393,6 +393,40 @@ input[type=text]:focus {
   opacity: 0.5;
 }
 
+/* iocircle flex */
+
+/* .iout {
+  width: 600px;
+} */
+
+.icircle {
+  background-color: orange;
+}
+
+div.itimeout {
+  display: flex;
+  background-color: white;
+}
+
+div.itime {
+  color: black;
+  flex-grow: 1;
+  padding: 1rem;
+}
+div.itime#d {
+  background-color: green;
+}
+div.itime#h {
+  background-color: red;
+}
+div.itime#m {
+  background-color: blue;
+}
+div.itime#s {
+  background-color: yellow;
+}
+
+
 /* cookie popup */
 #cookie-div-out {
   position: absolute;

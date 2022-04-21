@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Hilbert Curve{% endblock %}
+{% block Body %}
+<h1>Hilbert Curve</h1>
+<p>A hilbert curve is a form of space filling curve. You can find out more about them <a href='https://en.wikipedia.org/wiki/Hilbert_curve'>here</a></p>
+<div>
+  Set Level: <input type='number' id='n' name='n' min='0'> <button onclick='window.location.replace = "https://www.kineticcat.ml/projects/hilbert?n=" + document.getElementById("n").value;window.location = "https://www.kineticcat.ml/projects/hilbert?n=" + document.getElementById("n").value'>Load</button>
+  <br>
+  {% if request.args['n'] %}
+    <div id='level'>Current Level: {{ request.args['n'] }}</div>
+  {% else %}
+    <div id='level'>Current Level: 6</div>
+  {% endif %}
+
+</div>
+<canvas id='hilbert'></canvas>
+<script>
+// Code based on this codepen: https://codepen.io/DonKarlssonSan/pen/aOVGYJ !
+
+(function () {
+  function incX(angle) {
+    return Math.round(Math.cos(angle)*min/(Math.pow(iterations+1, 2.2)));
+  }
+  function incY(angle) {
+    return Math.round(Math.sin(angle)*min/(Math.pow(iterations+1, 2.2)))*-1;
+  }
+  
+  var canvas = document.getElementById("hilbert");
+  canvas.width = window.innerWidth - 100;
+  canvas.height = window.innerHeight;
+  var min = Math.min(canvas.width, canvas.height);
+  var ctx = canvas.getContext("2d");
+  
+  {% if request.args['n'] %}
+    var iterations = {{request.args['n']}};
+  {% else %}
+    var iterations = 6;
+  {% endif %}   
+  
+  var x,y;
+  var angle = 0;
+
+  var result = "A";
+  
+  var rules = {
+    A: "-BF+AFA+FB-",
+    B: "+AF-BFB-FA+"
+  };
+  
+  for(var i = 0; i < iterations; ++i) {
+    result = replaceAll(result, rules);
+  }
+
+  function replaceAll(str, mapObj){
+    var re = new RegExp(Object.keys(mapObj).join("|"), "gi");
+
+    return str.replace(re, function(matched){
+        return mapObj[matched];
+    });
+  }
+  
+  var numberOfF = (result.match(/F/g) || []).length;
+  var currentFIndex = 0;
+  
+  x = Math.round(canvas.width / (iterations + 1));
+  y = Math.round(canvas.height - canvas.height / (iterations + 1));
+  
+  
+  
+  var index = 0;
+  function draw() {
+    if(index === result.length) {
+      return;
+    }
+    if(result[index] === "F") {
+      var color = currentFIndex / numberOfF * 360;
+      ctx.strokeStyle = "hsl(" + color + ", 100%, 50%)";
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      x += incX(angle);
+      y += incY(angle);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ++currentFIndex;
+    } else if(result[index] === "+") {
+      angle -= Math.PI/2;
+    } else if(result[index] === "-") {
+      angle += Math.PI/2;
+    }    
+    ++index;
+    if(index % 4 === 0) {
+      requestAnimationFrame(draw);
+    } else {
+      draw();
+    }
+  }
+  draw();
+})();
+</script>
+
+{% endblock %}

@@ -22,4 +22,4 @@ for (let i = 0; i<nums.length; i++) {
   collatz.innerHTML += "  --> " + nums[i].toString();
 }
 collatz.appendChild(document.createElement('br'));
-collatz.innerHTML += '(Steps took: ' + nums.length.toString() + ')';
+collatz.innerHTML += '(Steps taken: ' + nums.length.toString() + ')';

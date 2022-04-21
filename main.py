@@ -147,10 +147,11 @@ def signup():
                            loggedin=loggedin(request),
                            isPassVerified=passVerified)
 
+############ Projects #############
 
 @app.route('/projects')
 def projects():
-    return render_template('projects.html')
+    return render_template('projects.html', pages=[['metaballs', 'Metaballs'], ['cube', 'Three.js Cube'], ['web', 'Web [WIP]'], ['triangle', 'Triangle'], ['iocircle', 'IO circle [WIP]'], ['hilbert', 'Hilbert Curve']])
 
 
 @app.route('/projects/metaballs')
@@ -166,6 +167,63 @@ def metaballs():
                            value=pyml,
                            loggedin=loggedin(request))
 
+@app.route('/projects/cube')
+def cube():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    print(pyml)
+    return render_template('cube.html', value=pyml, loggedin=loggedin(request))
+
+@app.route('/projects/web')
+def web():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    print(pyml)
+    return render_template('web.html', value=pyml, loggedin=loggedin(request))
+
+@app.route('/projects/triangle')
+def triangle():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('triangle.html', value=pyml)
+
+@app.route('/projects/iocircle')
+def iocircle():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('iocircle.html', value=pyml)
+
+@app.route('/projects/hilbert')
+def hilbert():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('hilbert.html', value=pyml, request=request)
+###################Projects#################
 
 @app.route('/what')
 def what():
@@ -179,30 +237,10 @@ def what():
     return render_template('what.html', value=pyml, loggedin=loggedin(request))
 
 
-@app.route('/projects/cube')
-def cube():
-    # try:
-    Logged_In = request.cookies.get('Logged_In')
-    if Logged_In == "True":
-        pyml = request.cookies.get('userID')
-    else:
-        Logged_In = "False"
-        pyml = "Login"
-    print(pyml)
-    return render_template('cube.html', value=pyml, loggedin=loggedin(request))
 
 
-@app.route('/projects/web')
-def web():
-    # try:
-    Logged_In = request.cookies.get('Logged_In')
-    if Logged_In == "True":
-        pyml = request.cookies.get('userID')
-    else:
-        Logged_In = "False"
-        pyml = "Login"
-    print(pyml)
-    return render_template('web.html', value=pyml, loggedin=loggedin(request))
+
+
 
 
 # except:
@@ -322,27 +360,9 @@ def handle_exception(e):
         return response
 
 
-@app.route('/projects/triangle')
-def triangle():
-    # try:
-    Logged_In = request.cookies.get('Logged_In')
-    if Logged_In == "True":
-        pyml = request.cookies.get('userID')
-    else:
-        Logged_In = "False"
-        pyml = "Login"
-    return render_template('triangle.html', value=pyml)
 
-@app.route('/projects/iocircle')
-def iocircle():
-    # try:
-    Logged_In = request.cookies.get('Logged_In')
-    if Logged_In == "True":
-        pyml = request.cookies.get('userID')
-    else:
-        Logged_In = "False"
-        pyml = "Login"
-    return render_template('iocircle.html', value=pyml)
+
+
 
 
 @app.route('/cookies')

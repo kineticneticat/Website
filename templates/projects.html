@@ -4,11 +4,9 @@
 
 <main>
   <div class="projectContainer">
-    <a href="/projects/metaballs" class="projectItem">Metaballs</a>
-    <a href="/projects/cube" class="projectItem">Three.js Cube</a>
-    <a href='/projects/web' class='projectItem'>Web [WIP]</a>
-    <a href='/projects/triangle' class='projectItem'>Triangle</a>
-    <a href='/projects/iocircle' class='projectItem'>IO Circle</a>
+    {% for page in pages %}
+      <a href='/projects/{{ page[0] }}' class='projectItem'>{{ page[1] }}</a>
+    {% endfor %}
   </div>
 </main>
 

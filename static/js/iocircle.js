@@ -1,6 +1,3 @@
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 window.onload = startup;
 
 function startup() {
@@ -15,11 +12,13 @@ function loop() {
 async function go(){
     // debugger;
 
-    //console.log(new Date('April 17, 2022, 00:00:00 UTC') - new Date());
-    ms = new Date('April 17, 2022, 00:00:00 UTC') - new Date();
+    ms = new Date('May 1, 2022, 00:00:00 UTC') - new Date();
     let month = 'apr';
     var canvas = document.getElementById("iocircle");
     var ctx = canvas.getContext("2d");
+    let minuteSkips = {
+      60: []
+    }
     
     ctx.clearRect(0, 0, 1000, 1000);
     ctx.strokeStyle = "white";
@@ -34,16 +33,19 @@ async function go(){
     finalMinutes = fullMinutes - fullHours * 60
     finalSeconds = fullSeconds - fullMinutes * 60
 
-
+    document.getElementById('d').innerHTML = finalDays
+    document.getElementById('h').innerHTML = finalHours
+    document.getElementById('m').innerHTML = finalMinutes
+    document.getElementById('s').innerHTML = finalSeconds
+    
   
   // debugger;
   //seconds
     ctx.fillStyle = '#23232e';
-    console.log(finalSeconds)
     for (let index = 0; index < 60; index++) {
-        if (index % finalSeconds == 0) {
-          continue
-        }
+        // if (index % (60 - finalSeconds) == 0) {
+        //   pass
+        // }
         let angle = (index * 6) * (Math.PI / 180);
         ctx.beginPath();
         ctx.arc(Math.sin(angle)*110+499, Math.cos(angle)*110+499, 3, 0, 2 * Math.PI);
@@ -55,7 +57,7 @@ async function go(){
   //minuits
     ctx.fillStyle = 'white';
     for (let index = 0; index < 60; index++) {
-        if (index % finalMinutes == 0) {
+        if (index % (60/finalMinutes) == 0) {
           continue
         }
         let angle = (index * 6) * (Math.PI / 180);
@@ -69,7 +71,7 @@ async function go(){
   //hours
     ctx.fillStyle = '#23232e';
     for (let index = 0; index < 24; index++) {
-        if (index % finalHours == 0) {
+        if (index % (24/finalHours) == 0) {
           continue
         }
         let angle = (index * (360/24)) * (Math.PI / 180);
@@ -94,7 +96,7 @@ async function go(){
     }
     
     for (let index = 0; index < amt; index++) {
-        if (index % finalDays == 0) {
+        if (index % (amt/finalDays) == 0) {
           continue
         }
         let angle = (index * θ) * (Math.PI / 180);
