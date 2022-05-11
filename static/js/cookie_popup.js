@@ -15,13 +15,13 @@ function getCookie(cname) {
 }
 
 function cookie_accept() {
-    document.cookie = 'cookies_accepted=True'
+    document.cookie = 'cookies_accepted=True; expires=' + new Date(new Date().setFullYear(new Date().getFullYear() + 100))
     document.getElementById('cookie-div').className = 'popdown'
 }
 
 window.onload = function() {
   
-  if (getCookie('cookies_accepted') == '') {
+  if (!getCookie('cookies_accepted')) {
     document.getElementById('cookie-div').className = 'popup'
   } else {
     document.getElementById('cookie-div').className = 'popdown'

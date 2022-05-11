@@ -3,6 +3,7 @@ import pickle
 import json
 from werkzeug.exceptions import HTTPException
 import hashlib
+import datetime
 
 app = Flask(__name__)
 app.config['SITEMAP_IGNORE_ENDPOINTS'] = ['/prpo', '/tos', '/debug']
@@ -55,19 +56,27 @@ def setcookie():
                 passfinder = None
             usedpass = encrypt(request.form['loginpass'],
                                accounts[user]['uname'])
-            print(f'  pass : {passfinder}')
-            print(f'  pass : {type(passfinder)}')
-            print(f'inpass : {usedpass}')
-            print(f'inpass : {type(usedpass)}')
-            print(f'match: {passfinder == usedpass}')
 
             if usedpass == passfinder and FailedLogin != 'yes':
                 Logged_In = "True"
             else:
                 Logged_In = "False"
             resp = make_response(redirect(url_for('home')))
-            resp.set_cookie('userID', user)
-            resp.set_cookie('Logged_In', Logged_In)
+            date = datetime.datetime.today()
+            resp.set_cookie('userID',
+                            user,
+                            expires=datetime.datetime(date.year + 1,
+                                                      date.month, date.day,
+                                                      date.hour + 1,
+                                                      date.minute, date.second,
+                                                      date.microsecond))
+            resp.set_cookie('Logged_In',
+                            Logged_In,
+                            expires=datetime.datetime(date.year + 1,
+                                                      date.month, date.day,
+                                                      date.hour + 1,
+                                                      date.minute, date.second,
+                                                      date.microsecond))
             f.close()
             return resp
     else:
@@ -107,8 +116,8 @@ def login():
 @app.route('/logout')
 def logout():
     resp = make_response(redirect(url_for("login")))
-    resp.set_cookie('userID', "nut")
-    resp.set_cookie('Logged_In', "False")
+    resp.set_cookie('userID', "nut", expires=datetime.datetime.today())
+    resp.set_cookie('Logged_In', "False", expires=datetime.datetime.today())
     print(resp)
     return resp
 
@@ -147,11 +156,19 @@ def signup():
                            loggedin=loggedin(request),
                            isPassVerified=passVerified)
 
+
 ############ Projects #############
+
 
 @app.route('/projects')
 def projects():
-    return render_template('projects.html', pages=[['metaballs', 'Metaballs'], ['cube', 'Three.js Cube'], ['web', 'Web [WIP]'], ['triangle', 'Triangle'], ['iocircle', 'IO circle [WIP]'], ['hilbert', 'Hilbert Curve']])
+    return render_template('projects.html',
+                           pages=[['metaballs', 'Metaballs'],
+                                  ['cube', 'Three.js Cube'],
+                                  ['web', 'Web [WIP]'],
+                                  ['triangle', 'Triangle'],
+                                  ['iocircle', 'IO circle [WIP]'],
+                                  ['hilbert', 'Hilbert Curve']])
 
 
 @app.route('/projects/metaballs')
@@ -167,6 +184,7 @@ def metaballs():
                            value=pyml,
                            loggedin=loggedin(request))
 
+
 @app.route('/projects/cube')
 def cube():
     # try:
@@ -178,6 +196,7 @@ def cube():
         pyml = "Login"
     print(pyml)
     return render_template('cube.html', value=pyml, loggedin=loggedin(request))
+
 
 @app.route('/projects/web')
 def web():
@@ -191,6 +210,7 @@ def web():
     print(pyml)
     return render_template('web.html', value=pyml, loggedin=loggedin(request))
 
+
 @app.route('/projects/triangle')
 def triangle():
     # try:
@@ -201,6 +221,7 @@ def triangle():
         Logged_In = "False"
         pyml = "Login"
     return render_template('triangle.html', value=pyml)
+
 
 @app.route('/projects/iocircle')
 def iocircle():
@@ -213,6 +234,7 @@ def iocircle():
         pyml = "Login"
     return render_template('iocircle.html', value=pyml)
 
+
 @app.route('/projects/hilbert')
 def hilbert():
     # try:
@@ -223,7 +245,10 @@ def hilbert():
         Logged_In = "False"
         pyml = "Login"
     return render_template('hilbert.html', value=pyml, request=request)
+
+
 ###################Projects#################
+
 
 @app.route('/what')
 def what():
@@ -235,12 +260,6 @@ def what():
         pyml = "Login"
     print(pyml)
     return render_template('what.html', value=pyml, loggedin=loggedin(request))
-
-
-
-
-
-
 
 
 # except:
@@ -358,11 +377,6 @@ def handle_exception(e):
         })
         response.content_type = "application/json"
         return response
-
-
-
-
-
 
 
 @app.route('/cookies')

@@ -1,16 +1,23 @@
 {% extends "base.html" %}
 {% block title %}IO circle{% endblock %}
 {% block Body %}
-<div class='iout'>
-  <canvas id="iocircle" style="background:#23232e" height="999" width="999"></canvas>
-  <div class='itimeout'>
-      <div class='itime' id='d'>days</div>
-      <div class='itime' id='h'>hours</div>
-      <div class='itime' id='m'>minutes</div>
-      <div class='itime' id='s'>seconds</div>
-  </div>
-</div>
-
+<b>
+<table class='iout'>
+  <tr>
+    <canvas id="iocircle" style="background:#23231e" height="999" width="999"></canvas>
+  </tr>
+  <tr>
+    <table class='itimeout'>
+      <tr>
+        <td class='itime' id='d'>days</td>
+        <td class='itime' id='h'>hours</td>
+        <td class='itime' id='m'>minutes</td>
+        <td class='itime' id='s'>seconds</td>
+      </tr>
+    </table>
+  </tr>
+</table>
+</b>
 <script>
   
   var out = document.getElementsByClassName('iout')[0]
@@ -21,13 +28,13 @@
   function startup() {
     // debugger;
     if (window.outerWidth >= 700 && window.outerHeight >= 600) {
-      canvas.width = 700 - 100;
-      canvas.height = 600
-      out.width = canvas.width
+      out.width = 700 - 100;
+      canvas.height = 600;
+      canvas.width = out.width;
     } else {
-      canvas.width = window.outerWidth - 100;
+      out.width = window.outerWidth - 100;
       canvas.height = window.outerHeight;
-      out.width = canvas.width
+      canvas.width = out.width;
     }
       var loopID = setInterval(go, 1000);
   }
@@ -53,12 +60,9 @@
     //seconds
       ctx.fillStyle = '#23232e';
       for (let index = 0; index < 60; index++) {
-          // if (index >= Math.floor((new Date('May 1, 2022, 00:00:00 UTC') - new Date())/1000) - Math.floor(((new Date('May 1, 2022, 00:00:00 UTC') - new Date())/1000)/60) * 60) {
-          //   continue
-          // }
-          for (let i = 0; i < seg60.length;i++) {
-            alert(i)
-          }
+          if (index >= Math.floor((new Date('May 1, 2022, 00:00:00 UTC') - new Date())/1000) - Math.floor(((new Date('May 1, 2022, 00:00:00 UTC') - new Date())/1000)/60) * 60) {
+            continue;
+          }     
           let angle = (index * 6) * (Math.PI / 180);
           ctx.beginPath();
           ctx.arc(Math.sin(angle)*110+centre[0], Math.cos(angle)*110+centre[1], 3, 0, 2 * Math.PI);
