@@ -94,7 +94,37 @@
     </ul>
   </nav>
 
-  <script src='../static/js/cookie_popup.js'></script>
+  <script>
+		function getCookie(cname) {
+		  let name = cname + "=";
+		  let decodedCookie = decodeURIComponent(document.cookie);
+		  let ca = decodedCookie.split(';');
+		  for(let i = 0; i <ca.length; i++) {
+		    let c = ca[i];
+		    while (c.charAt(0) == ' ') {
+		      c = c.substring(1);
+		    }
+		    if (c.indexOf(name) == 0) {
+		      return c.substring(name.length, c.length);
+		    }
+		  }
+		  return "";
+		}
+		
+		function cookie_accept() {
+		    document.cookie = 'cookies_accepted=True; expires=' + new Date(new Date().setFullYear(new Date().getFullYear() + 100))
+		    document.getElementById('cookie-div').className = 'popdown'
+		}
+		
+		window.onload = function() {
+		  
+		  if (!getCookie('cookies_accepted')) {
+		    document.getElementById('cookie-div').className = 'popup'
+		  } else {
+		    document.getElementById('cookie-div').className = 'popdown'
+		  }
+		};
+	</script>
 
   <div id='cookie-div-out'>
     <div id="cookie-div" class='popdown'>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Boids{% endblock %}
+{% block Body %}
+<canvas id='canvas' style='background-color: red;'></canvas>
+<script>
+  canvas = document.getElementById('canvas');
+  ctx = canvas.getContext('2d');
+  canvas.width = 500;
+  canvas.height = 500;
+  window.onload = startup;
+  
+  class Boid {
+    constructor(x, y, v/*, goal*/) {
+      this.x = x;
+      this.y = y;
+      this.v = v;
+      // this.goal = goal;
+      this.theta = Math.atan2(this.x - (this.v[0] + this.x), this.y - (this.v[1] + this.y)) * (180 / Math.pi);
+    }
+    draw() {
+      pass
+    }
+  }
+  
+  boids = [new Boid(0, 0, [2, 1])]
+  
+  function startup() {
+    loop();
+  }
+  function loop(boids) {
+    main();
+    requestAnimationFrame(loop);
+  }
+  function main() {
+    // debugger;24
+    
+    for (let i=0; i<boids.length;i++) {
+      boids[i].draw();
+    }
+  }
+</script>
+{% endblock %}

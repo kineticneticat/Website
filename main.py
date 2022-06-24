@@ -168,7 +168,9 @@ def projects():
                                   ['web', 'Web [WIP]'],
                                   ['triangle', 'Triangle'],
                                   ['iocircle', 'IO circle [WIP]'],
-                                  ['hilbert', 'Hilbert Curve']])
+                                  ['hilbert', 'Hilbert Curve'],
+                                  ['boids', 'Boids [WIP]'],
+																 	['iso', 'Isometric']])
 
 
 @app.route('/projects/metaballs')
@@ -245,6 +247,29 @@ def hilbert():
         Logged_In = "False"
         pyml = "Login"
     return render_template('hilbert.html', value=pyml, request=request)
+
+
+@app.route('/projects/boids')
+def boids():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('boids.html', value=pyml, request=request)
+
+@app.route('/projects/iso')
+def iso():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('iso.html', value=pyml, request=request)
 
 
 ###################Projects#################
