@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Isometric Game{% endblock %}
+{% block Body %}
+<canvas id='isocanvas'></canvas>
+<script>
+	window.onload = startup
+	window.onkeyup = car.move
+	var ctx, canvas, cube, car
+
+	function cartiso(x, y) {
+		var finalx = ((x*0.5 + y*-0.5 )*57-16+canvas.width/2)
+		var finaly = (x*0.25 + y*0.25 )*58
+		return [finalx, finaly]
+	}
+
+	
+	
+	function startup() {
+		class Car {
+		constructor() {
+			this.x = 0
+			this.y = 0
+			this.isox = cartiso(this.x-1, this.y-1)[0]
+			this.isoy = cartiso(this.x-1, this.y-1)[1]
+			this.facing = 0
+			this.image = new Image()
+			this.image.src = '../static/images/isogame/baseground.png'
+		}
+		draw() {
+				ctx.drawImage(this.image, cartiso(this.x, this.y)[0], cartiso(this.x, this.y)[1], 64, 64)
+		}
+		move(e) {
+			e = e || window.event
+			switch (e.keyCode) {
+					case '40':
+						alert('back')
+						this.moveBack()
+			}
+				
+		}
+		moveBack() {
+			this.y += -1
+			this.draw()
+		}
+	}
+		canvas = document.getElementById('isocanvas')
+		ctx = canvas.getContext('2d')
+		cube = new Image()
+		cube.src = '../static/images/isogame/baseground.png'
+		canvas.width = 1000
+		canvas.height = 663
+		car = new Car()
+		tick()
+	}
+	function tick() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height)
+		drawworld()
+		// car.draw()
+		requestAnimationFrame(tick)
+	}
+	function drawworld() {
+		debugger
+		for (let i=0;i<8;i++){
+			for (let j=0;j<8;j++){
+				ctx.drawImage(cube, cartiso(j, i)[0], cartiso(j, i)[1], 64, 64)
+			}
+		}
+		debugger
+
+		
+	}
+</script>
+{% endblock %}

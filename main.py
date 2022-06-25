@@ -170,7 +170,8 @@ def projects():
                                   ['iocircle', 'IO circle [WIP]'],
                                   ['hilbert', 'Hilbert Curve'],
                                   ['boids', 'Boids [WIP]'],
-																 	['iso', 'Isometric']])
+								  ['iso', 'Isometric'],
+                                  ['isogame', 'Isometric Game']])
 
 
 @app.route('/projects/metaballs')
@@ -270,6 +271,17 @@ def iso():
         Logged_In = "False"
         pyml = "Login"
     return render_template('iso.html', value=pyml, request=request)
+
+@app.route('/projects/isogame')
+def isogame():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('isogame.html', value=pyml, request=request)
 
 
 ###################Projects#################
