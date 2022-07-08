@@ -171,7 +171,8 @@ def projects():
                                   ['hilbert', 'Hilbert Curve'],
                                   ['boids', 'Boids [WIP]'],
 								  ['iso', 'Isometric'],
-                                  ['isogame', 'Isometric Game']])
+                                  ['isogame', 'Isometric Game'],
+                                  ['golf', 'Golf']])
 
 
 @app.route('/projects/metaballs')
@@ -282,6 +283,17 @@ def isogame():
         Logged_In = "False"
         pyml = "Login"
     return render_template('isogame.html', value=pyml, request=request)
+
+@app.route('/projects/golf')
+def golf():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('golf.html', value=pyml, request=request)
 
 
 ###################Projects#################

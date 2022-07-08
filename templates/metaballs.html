@@ -67,8 +67,8 @@
     function mouseMove(evt) {
       var canvas = document.getElementById("metaballCanvas");
       var rect = canvas.getBoundingClientRect();
-      mouseX = evt.screenX - rect.left;
-      mouseY = evt.screenY - rect.top + -50;
+      mouseX = evt.clientX - rect.left;
+      mouseY = evt.clientY - rect.top + 25;
     }
 
     let scrollAmt = 0
