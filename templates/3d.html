@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}3D{% endblock %}
+{% block Body %}
+<canvas id='canvas'></canvas>
+<script>
+	canvas = document.getElementById('canvas')
+	ctx = canvas.getContext("2d")
+	settings = {
+		w: 500,
+		h: 500
+	}
+	canvas.width = settings.w
+	canvas.height = settings.h
+	
+	perspective = [settings.w/2,settings.h/2]
+	class Vertex {
+		constructor(x, y, z) {
+			this.x = x
+			this.y = y
+			this.z = z
+			this.fx
+			this.fy
+			this.shift()
+		}
+		shift() {
+			this.fx = this.x
+			this.fy = this.y
+		}
+		draw() {
+			ctx.beginPath()
+			ctx.arc(this.fx, this.fy, 5, 0, Math.PI*2)
+			ctx.stroke
+		}
+	}
+	points = [new Vertex(300, 300, 0), new Vertex(350, 300, 0), new Vertex(350, 300, 0), new Vertex(350, 350, 0)]
+	for (let i = 0; i<points.length;i++) {
+		points[i].draw()
+	}
+</script>
+{% endblock %}
