@@ -5,7 +5,11 @@
 <main>
   <div class="projectContainer">
     {% for page in pages %}
-      <a href='/projects/{{ page[0] }}' class='projectItem'>{{ page[1] }}</a>
+			{% if page[2] %}
+      	<a href='/projects/{{ page[0] }}' class='projectItem' style='background:red;'>{{ page[1] }}</a>
+			{% else %}
+      	<a href='/projects/{{ page[0] }}' class='projectItem'>{{ page[1] }}</a>
+			{% endif %}
     {% endfor %}
   </div>
 </main>

@@ -163,16 +163,17 @@ def signup():
 @app.route('/projects')
 def projects():
     return render_template('projects.html',
-                           pages=[['metaballs', 'Metaballs'],
-                                  ['cube', 'Three.js Cube'],
-                                  ['web', 'Web [WIP]'],
-                                  ['triangle', 'Triangle'],
-                                  ['iocircle', 'IO circle [WIP]'],
-                                  ['hilbert', 'Hilbert Curve'],
-                                  ['boids', 'Boids [WIP]'],
-								  ['iso', 'Isometric'],
-                                  ['isogame', 'Isometric Game'],
-																 ['3d', '3D']])
+                           pages=[['metaballs', 'Metaballs', False],
+                                  ['cube', 'Three.js Cube', False],
+                                  ['web', 'Web', True],
+                                  ['triangle', 'Triangle', True],
+                                  ['iocircle', 'Countdown', False],
+                                  ['hilbert', 'Hilbert Curve', False],
+                                  ['boids', 'Boids', True],
+								  ['iso', 'Isometric', True],
+																 ['3d', '3D', True],
+																 ['astar', 'A* Algorithm', True],
+																 ['periodic', 'Periodic Table', True]])
 
 
 @app.route('/projects/metaballs')
@@ -294,6 +295,28 @@ def threed():
         Logged_In = "False"
         pyml = "Login"
     return render_template('3d.html', value=pyml, request=request)
+
+@app.route('/projects/astar')
+def astar():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('astar.html', value=pyml, request=request)
+
+@app.route('/projects/periodic')
+def periodic():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('periodic.html', value=pyml, request=request)
 
 
 ###################Projects#################
