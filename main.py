@@ -186,6 +186,9 @@ def projects():
 								  ['iso', 'Isometric'],
                                   ['isogame', 'Isometric Game'],
                                   ['golf', 'Golf']])
+<<<<<<< HEAD
+>>>>>>> origin/main
+=======
 >>>>>>> origin/main
 
 
@@ -299,8 +302,13 @@ def isogame():
     return render_template('isogame.html', value=pyml, request=request)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 @app.route('/projects/3d')
 def threed():
+=======
+@app.route('/projects/golf')
+def golf():
+>>>>>>> origin/main
 =======
 @app.route('/projects/golf')
 def golf():
@@ -312,6 +320,7 @@ def golf():
     else:
         Logged_In = "False"
         pyml = "Login"
+<<<<<<< HEAD
 <<<<<<< HEAD
     return render_template('3d.html', value=pyml, request=request)
 
@@ -336,6 +345,9 @@ def periodic():
         Logged_In = "False"
         pyml = "Login"
     return render_template('periodic.html', value=pyml, request=request)
+=======
+    return render_template('golf.html', value=pyml, request=request)
+>>>>>>> origin/main
 =======
     return render_template('golf.html', value=pyml, request=request)
 >>>>>>> origin/main
