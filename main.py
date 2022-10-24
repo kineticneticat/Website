@@ -163,6 +163,7 @@ def signup():
 @app.route('/projects')
 def projects():
     return render_template('projects.html',
+<<<<<<< HEAD
                            pages=[['metaballs', 'Metaballs', False],
                                   ['cube', 'Three.js Cube', False],
                                   ['web', 'Web', True],
@@ -174,6 +175,18 @@ def projects():
 																 ['3d', '3D', True],
 																 ['astar', 'A* Algorithm', True],
 																 ['periodic', 'Periodic Table', True]])
+=======
+                           pages=[['metaballs', 'Metaballs'],
+                                  ['cube', 'Three.js Cube'],
+                                  ['web', 'Web [WIP]'],
+                                  ['triangle', 'Triangle'],
+                                  ['iocircle', 'IO circle [WIP]'],
+                                  ['hilbert', 'Hilbert Curve'],
+                                  ['boids', 'Boids [WIP]'],
+								  ['iso', 'Isometric'],
+                                  ['isogame', 'Isometric Game'],
+                                  ['golf', 'Golf']])
+>>>>>>> origin/main
 
 
 @app.route('/projects/metaballs')
@@ -285,8 +298,13 @@ def isogame():
         pyml = "Login"
     return render_template('isogame.html', value=pyml, request=request)
 
+<<<<<<< HEAD
 @app.route('/projects/3d')
 def threed():
+=======
+@app.route('/projects/golf')
+def golf():
+>>>>>>> origin/main
     # try:
     Logged_In = request.cookies.get('Logged_In')
     if Logged_In == "True":
@@ -294,6 +312,7 @@ def threed():
     else:
         Logged_In = "False"
         pyml = "Login"
+<<<<<<< HEAD
     return render_template('3d.html', value=pyml, request=request)
 
 @app.route('/projects/astar')
@@ -317,6 +336,9 @@ def periodic():
         Logged_In = "False"
         pyml = "Login"
     return render_template('periodic.html', value=pyml, request=request)
+=======
+    return render_template('golf.html', value=pyml, request=request)
+>>>>>>> origin/main
 
 
 ###################Projects#################

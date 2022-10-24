@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Golf{% endblock %}
+{% block Body %}
+<canvas id="golfcanvas" style="background-color: #43942e;" onmousemove="mouseMove(event)"></canvas>
+<script>
+    const settings = {
+        w: 500,
+        h: 500,
+    }
+    const canvas = document.getElementById("golfcanvas")
+    const ctx = canvas.getContext("2d")
+    const pi = Math.PI
+    const tau = pi*2
+    canvas.width = settings.w
+    canvas.height = settings.h
+    let mouseX
+    let mouseY
+
+
+
+    class Ball {
+        constructor(tee, hole, x, y) {
+            this.tee = tee
+            this.hole = hole
+            this.x = x
+            this.y = y
+        }
+        draw() {
+            ctx.beginPath()
+            ctx.arc(this.x, this.y, 10, 0, tau)
+            ctx.arc(mouseX, mouseY, 1, 0, tau)
+            ctx.lineWidth = 5
+            ctx.moveTo(this.x, this.y)
+            ctx.lineTo(mouseX, mouseY)
+            ctx.stroke()
+            this.tee.draw()
+            this.hole.draw()
+        }
+        calcpower() {
+            this.power = Math.sqrt((this.x-mouseX)**2 + (this.y-mouseY)**2)
+            return this.power
+        }
+    }
+    class Tee {
+        constructor(x, y) {
+            this.x = x
+            this.y = y
+        }
+        draw() {
+            ctx.beginPath()
+            ctx.arc(this.x, this.y, 5, 0, Math.PI*2)
+            ctx.stroke()
+        }
+    }
+    class Hole {
+        constructor(x, y) {
+            this.x = x
+            this.y = y
+        }
+        draw() {
+            ctx.beginPath()
+            ctx.arc(this.x, this.y, 5, 0, Math.PI*2)
+            ctx.stroke()
+        }
+    }
+    const ball = new Ball(new Tee(10, 10), new Hole(50, 50), 250, 250)
+    console.log(ball)
+
+    function mouseMove(evt) {
+        var canvas = document.getElementById("golfcanvas");
+        var rect = canvas.getBoundingClientRect();
+        mouseX = evt.clientX - rect.left;
+        mouseY = evt.clientY - rect.top;
+    }
+
+    let scrollAmt = 0
+    const scroller = document.querySelector("body");
+    scroller.addEventListener("scroll", event => {
+        scrollAmt = scroller.scrollTop;
+    })
+
+    
+    window.onload = () => {
+        
+        tick()
+    }
+    function tick() {
+        //reset frame
+        ctx.clearRect(0, 0, settings.w, settings.h)
+
+        
+        ball.draw()
+    
+
+        requestAnimationFrame(tick)
+    }
+</script>
+{% endblock %}
