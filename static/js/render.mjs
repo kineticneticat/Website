@@ -148,45 +148,47 @@ window.addEventListener("keyup", () => {
 
 
 function loop() {
-    // console.log(keyRi, keyLe)
-		// console.log(player)
-		document.getElementById('stuff').innerHTML = JSON.stringify(obj)
-		document.getElementById('out').innerHTML = JSON.stringify(player)
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-		if (true) {
-    	for (let i=0;i<obj.length;i++) {
-        obj[i].draw()
-        if (keyW) {
-					obj[i].pMove(0, 0, -1)
-        }
-        if (keyA) {
-					obj[i].pMove(1, 0, 0)
-	        }
-	        if (keyS) {
-						obj[i].pMove(0, 0, 1)
-	        }
-	        if (keyD) {
-						obj[i].pMove(-1, 0, 0)
-	        }
-	        if (keySp) {
-						obj[i].pMove(0, 1, 0)
-	        }
-	        if (keySh) {
-						obj[i].pMove(0, -1, 0)
-	        }
-					if (keyRi) {
-						obj[i].pTurn(1, 0)
-					}
-					if (keyLe) {
-						obj[i].pTurn(-1, 0)
-					}
-					if (keyUp) {
-						obj[i].pTurn(0, -1)
-					}
-					if (keyDo) {
-						obj[i].pTurn(0, 1)
-					}
-	    }
+	// document.getElementById('stuff').innerHTML = JSON.stringify(obj)
+	// document.getElementById('out').innerHTML = JSON.stringify(player)
+	ctx.clearRect(0, 0, canvas.width, canvas.height)
+	for (let i=0;i<obj.length;i++) {
+		obj[i].draw()
+		if (keyW) {
+			obj[i].pMove(0, 0, -1)
+			player.z += 1
 		}
-    requestAnimationFrame(loop)
+		if (keyA) {
+			obj[i].pMove(1, 0, 0)
+			player.x += -1
+		}
+		if (keyS) {
+			obj[i].pMove(0, 0, 1)
+			player.z += -1
+		}
+		if (keyD) {
+			obj[i].pMove(-1, 0, 0)
+			player.x += 1
+		}
+		if (keySp) {
+			obj[i].pMove(0, 1, 0)
+			player.y += -1
+		}
+		if (keySh) {
+			obj[i].pMove(0, -1, 0)
+			player.y += 1
+		}
+		if (keyRi) {
+			obj[i].pTurn(1, 0)
+		}
+		if (keyLe) {
+			obj[i].pTurn(-1, 0)
+		}
+		if (keyUp) {
+			obj[i].pTurn(0, -1)
+		}
+		if (keyDo) {
+			obj[i].pTurn(0, 1)
+		}
+	}
+	requestAnimationFrame(loop)
 }

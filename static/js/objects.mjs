@@ -115,11 +115,8 @@ class Obj {
     pMove(dx, dy, dz) {
         for (let i=0;i<this.v.length;i++) {
             this.v[i].cx += dx
-						player.x += dx/20
             this.v[i].cy += dy
-						player.y += dy/20
             this.v[i].cz += dz
-						player.z += dz/20
         }
     }
 
@@ -185,20 +182,14 @@ export class Cre {
 					[x+wx, y+wy, z+wz]
 				]
 			
-        let v = [
-					// new Vertex(x,    y,    z),
-					// new Vertex(x+wx, y,    z),
-					// new Vertex(x,    y+wy, z),
-					// new Vertex(x+wx, y+wy, z),
-					// new Vertex(x,    y,    z+wz),
-					// new Vertex(x+wx, y,    z+wz),
-					// new Vertex(x,    y+wy, z+wz),
-					// new Vertex(x+wx, y+wy, z+wz)
-				]
+        let v = []
 
 				for (let i=0;i<beforeRot.length;i++) {
-					// temp = helper.multiply()
-					v.push(new Vertex(beforeRot[i][0], beforeRot[i][1], beforeRot[i][2], c))
+					let R = beforeRot[i]
+					let Rx = helper.Rx(R[0], R[1], R[2], rx)
+					let Rxy = helper.Ry(Rx[0], Rx[1], Rx[2], ry)
+					let Rxyz = helper.Rz(Rxy[0], Rxy[1], Rxy[2], rz)
+					v.push(new Vertex(Rxyz[0], Rxyz[1], Rxyz[2], c))
 				}
 				console.log(v)
 			
@@ -259,20 +250,20 @@ window.Create = new Cre
 ////////////////////////////////////////////
 class Help {
 	Rx(x, y, z, theta) {
-		return[
+		return [
 			1*x + 0*y + 0*z,
 			0*x + Math.cos(theta)*y - Math.sin(theta)*z,
 			0*x + Math.sin(theta)*y + Math.cos(theta)*z
 		]
 	}
-	Ry(theta) {
+	Ry(x, y, z, theta) {
 		return [
 			Math.cos(theta)*x + 0*y + Math.sin(theta)*z,
 			0*x + 1*y + 0*z,
 			-Math.sin(theta)*x + 0*y + Math.cos(theta)*z
 		]
 	}
-	Rz(theta) {
+	Rz(x, y, z, theta) {
 		return [
 			Math.cos(theta)*x + -Math.sin(theta)*y + 0*z,
 			Math.sin(theta)*x + Math.cos(theta)*y + 0*z,

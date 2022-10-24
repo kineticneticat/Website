@@ -10,4 +10,5 @@ export let data = [
 	{'type': 'point', 'pos': [35, -35, 20]},
 	{'type': 'point', 'pos': [-35, 35, 20]},
 	{'type': 'point', 'pos': [-35, -35, 20]},
+	{'type': 'cube', 'pos': [0, 0, 0], 'size': [10, 10, 10], 'rot': [45, 45, 45], 'colour': '#000000'}
 ]
