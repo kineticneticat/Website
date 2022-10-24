@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Boids{% endblock %}
 {% block Body %}
-<canvas id='canvas' style='background-color: red;'></canvas>
+<canvas id='canvas' style='background-color: #8888ff;'></canvas>
 <script>
   canvas = document.getElementById('canvas');
   ctx = canvas.getContext('2d');
@@ -14,11 +14,12 @@
       this.x = x;
       this.y = y;
       this.v = v;
-      // this.goal = goal;
+      this.image = new Image()
+			this.image.src = '/static/images/spot.png'
       this.theta = Math.atan2(this.x - (this.v[0] + this.x), this.y - (this.v[1] + this.y)) * (180 / Math.pi);
     }
     draw() {
-      pass
+      ctx.drawImage(this.image, 250, 250)
     }
   }
   

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}3D{% endblock %}
+{% block Body %}
+<canvas id="canvas" style="background-color: #eeeeee;"></canvas>
+<div id='out'></div>
+<div id='stuff'></div>
+<script src="../static/js/render.mjs", type="module"></script>
+<script src="../static/js/objects.mjs", type="module"></script>
+<style>
+	body {
+		margin: 0;
+	}
+</style>
+{% endblock %}
