@@ -13,6 +13,7 @@ export let settings = {
 	near:10,
 	far:100
 }
+
 export let player = {
     x: 0,
     y: 0,
@@ -21,6 +22,8 @@ export let player = {
 		ry:0,
 		rz:0
 }
+// console.log(player)
+
 export let sun = {
 	x: 50,
 	y: 50,
@@ -57,10 +60,8 @@ for (let i=0;i<data.length;i++) {
 
 //foor
 for (let i=0;i<10; i++) {
-	obj.push(Create.Line(50, 20, (i-5)*10, 
-											 -50, 20, (i-5)*10))
-	obj.push(Create.Line((i-5)*10, 20, 50, 
-											 (i-5)*10, 20, -50))
+	obj.push(Create.Line(50, 20, (i-5)*10, -50, 20, (i-5)*10))
+	obj.push(Create.Line((i-5)*10, 20, 50, (i-5)*10, 20, -50))
 }
 
 console.log(obj)
@@ -73,7 +74,7 @@ window.onload = () => {
 
 window.addEventListener("keydown", () => {
     var keyCode = event.keyCode;
-    console.log(keyCode)
+    // console.log(keyCode)
     switch (keyCode) {
         case 68: //d
             keyD = true
@@ -93,19 +94,19 @@ window.addEventListener("keydown", () => {
         case 16: //shift
             keySh = true
             break
-				case 39: // right
-						keyRi = true
-						break
-				case 37: // left
-						keyLe = true
-						break
-				case 38: // up
-						keyUp = true
-						break
-				case 40: // down
-						keyDo = true
-						break
-				
+		case 39: // right
+			keyRi = true
+			break
+		case 37: // left
+			keyLe = true
+			break
+		case 38: // up
+			keyUp = true
+			break
+		case 40: // down
+			keyDo = true
+			break
+	
         
     }
 })
@@ -130,18 +131,18 @@ window.addEventListener("keyup", () => {
         case 16: //shift
             keySh = false;
             break;
-				case 39: // right
-						keyRi = false
-						break
-				case 37: // left
-						keyLe = false
-						break
-				case 38: // up
-						keyUp = false
-						break
-				case 40: // down
-						keyDo = false
-						break
+		case 39: // right
+			keyRi = false
+			break
+		case 37: // left
+			keyLe = false
+			break
+		case 38: // up
+			keyUp = false
+			break
+		case 40: // down
+			keyDo = false
+			break
     }
 })
 
@@ -149,33 +150,45 @@ window.addEventListener("keyup", () => {
 
 function loop() {
 	// document.getElementById('stuff').innerHTML = JSON.stringify(obj)
-	// document.getElementById('out').innerHTML = JSON.stringify(player)
+	document.getElementById('out').innerHTML = JSON.stringify(player)
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
+	if (keyW) {
+		player.z += 1
+	}
+	if (keyA) {
+		player.x += -1
+	}
+	if (keyS) {
+		player.z += -1
+	}
+	if (keyD) {
+		player.x += 1
+	}
+	if (keySp) {
+		player.y += -1
+	}
+	if (keySh) {
+		player.y += 1
+	}
 	for (let i=0;i<obj.length;i++) {
 		obj[i].draw()
 		if (keyW) {
 			obj[i].pMove(0, 0, -1)
-			player.z += 1
 		}
 		if (keyA) {
 			obj[i].pMove(1, 0, 0)
-			player.x += -1
 		}
 		if (keyS) {
 			obj[i].pMove(0, 0, 1)
-			player.z += -1
 		}
 		if (keyD) {
 			obj[i].pMove(-1, 0, 0)
-			player.x += 1
 		}
 		if (keySp) {
 			obj[i].pMove(0, 1, 0)
-			player.y += -1
 		}
 		if (keySh) {
 			obj[i].pMove(0, -1, 0)
-			player.y += 1
 		}
 		if (keyRi) {
 			obj[i].pTurn(1, 0)

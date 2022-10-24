@@ -286,6 +286,17 @@ def isogame():
         pyml = "Login"
     return render_template('isogame.html', value=pyml, request=request)
 
+@app.route('/projects/3d')
+def threed():
+    # try:
+    Logged_In = request.cookies.get('Logged_In')
+    if Logged_In == "True":
+        pyml = request.cookies.get('userID')
+    else:
+        Logged_In = "False"
+        pyml = "Login"
+    return render_template('3d.html', value=pyml, request=request)
+
 
 ###################Projects#################
 
