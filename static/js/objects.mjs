@@ -7,19 +7,23 @@ const ctx = canvas.getContext("2d")
 /////////////////////////////////////////////
 class Vertex {
     constructor(x, y, z, c) {
+				// global coordinates
         this.x = x
         this.y = y
         this.z = z
-				this.cx = x
-				this.cy = y
-				this.cz = z
+			//position relative to global coordinates (local coords)
+				this.cx = 0
+				this.cy = 0
+				this.cz = 0
+			// colour
         this.c = c
+			// visibility
         this.show = true
     }
     
     project() {
-        this.prox = (this.cx*scale/(this.cz+scale))*10+250
-        this.proy = (this.cy*scale/(this.cz+scale))*10+250
+        this.prox = ((this.cx + this.x)*scale/((this.cz + this.z)+scale))*10+250
+        this.proy = ((this.cy + this.y)*scale/((this.cz + this.z)+scale))*10+250
     }
 
 		cull() {
@@ -120,42 +124,41 @@ class Obj {
         }
     }
 
-		pTurn(lr, ud) {
-			if (true) {
-				lr *= Math.PI/180
-				ud *= Math.PI/180
-				for (let i=0;i<this.v.length;i++) {
-					
-					player.ry += lr
-					// Y
-					let x = this.v[i].cx
-					let z = this.v[i].cz
-
-					x -= player.x
-					z -= player.z
-
-					let xPrime = x*Math.cos(lr) - z*Math.sin(lr)
-					let zPrime = x*Math.sin(lr) + z*Math.cos(lr)
-					
-					this.v[i].cx = xPrime + player.x
-					this.v[i].cz = zPrime + player.z
-				}
-			}
-			
+		pTurn(yaw, pitch) {
+			player.ry += yaw
+			yaw *= Math.PI/180
+			player.rx += pitch
+			pitch *= Math.PI/180
 			for (let i=0;i<this.v.length;i++) {
-				player.rx += ud
+				
 				// X
-          	let y = this.v[i].cy
-          	let z = this.v[i].cz
+				let y = this.v[i].cy
+				let z = this.v[i].cz
 
-						y -= player.y
-						z -= player.z
+				y -= player.y
+				z -= player.z
 
-						let yPrime = y*Math.cos(ud) - z*Math.sin(ud)
-						let zPrime = y*Math.sin(ud) + z*Math.cos(ud)
+				let yPrime = y*Math.cos(pitch) - z*Math.sin(pitch)
+				let zPrime = y*Math.sin(pitch) + z*Math.cos(pitch)
 
-						this.v[i].cy = yPrime + player.y
-            this.v[i].cz = zPrime + player.z
+				this.v[i].cy = yPrime + player.y
+				this.v[i].cz = zPrime + player.z
+			}
+			for (let i=0;i<this.v.length;i++) {
+					
+				
+				// Y
+				let x = this.v[i].cx + this.v[i].x
+				let z = this.v[i].cz + this.v[i].z
+
+				x -= player.x
+				z -= player.z
+
+				let xPrime = x*Math.cos(yaw) - z*Math.sin(yaw)
+				let zPrime = x*Math.sin(yaw) + z*Math.cos(yaw)
+				
+				this.v[i].cx = xPrime + player.x
+				this.v[i].cz = zPrime + player.z
 			}
 		}
 }
