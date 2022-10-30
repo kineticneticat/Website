@@ -12,9 +12,9 @@ class Vertex {
         this.y = y
         this.z = z
 			//position relative to global coordinates (local coords)
-				this.cx = 0
-				this.cy = 0
-				this.cz = 0
+				this.cx = x
+				this.cy = y
+				this.cz = z
 			// colour
         this.c = c
 			// visibility
@@ -22,8 +22,8 @@ class Vertex {
     }
     
     project() {
-        this.prox = ((this.cx + this.x)*scale/((this.cz + this.z)+scale))*10+250
-        this.proy = ((this.cy + this.y)*scale/((this.cz + this.z)+scale))*10+250
+        this.prox = ((this.cx)*scale/((this.cz)+scale))*10+250
+        this.proy = ((this.cy)*scale/((this.cz)+scale))*10+250
     }
 
 		cull() {
@@ -97,10 +97,11 @@ class Face {
 }
 /////////////////////////////////////////////
 class Obj {
-    constructor(Verts, Edges, Faces) {
+    constructor(Verts, Edges, Faces, Change) {
         this.v = Verts
         this.e = Edges
         this.f = Faces
+				this.c = Change
     }
 
     draw() {
@@ -148,8 +149,8 @@ class Obj {
 					
 				
 				// Y
-				let x = this.v[i].cx + this.v[i].x
-				let z = this.v[i].cz + this.v[i].z
+				let x = this.v[i].cx
+				let z = this.v[i].cz
 
 				x -= player.x
 				z -= player.z
@@ -172,7 +173,7 @@ class Tri {
 }
 /////////////////////////////////////////////
 export class Cre {
-    Cube(x, y, z, wx, wy, wz, rx, ry, rz, c) {
+    Cube(x, y, z, wx, wy, wz, rx, ry, rz, c, t=(t)=>{}) {
 
 				let beforeRot = [
 					[x,    y,    z],
@@ -203,7 +204,7 @@ export class Cre {
             new Face([v[0], v[1], v[3], v[2]])
         ]
     
-        return new Obj(v, e, f)
+        return new Obj(v, e, f, t)
     }
 	/////////////////////////////////////////////////////
     Point(x, y, z) {

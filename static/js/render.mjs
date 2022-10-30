@@ -40,7 +40,8 @@ for (let i=0;i<data.length;i++) {
 				data[i]['pos'][0], -data[i]['pos'][1], data[i]['pos'][2], 
 				data[i]['size'][0], data[i]['size'][1], data[i]['size'][2], 
 				data[i]['rot'][0], data[i]['rot'][1], data[i]['rot'][2], 
-				data[i]['colour']
+				data[i]['colour'],
+				data[i]['change']
 			))
 		case 'point':
 			obj.push(Create.Point(
@@ -171,6 +172,7 @@ function loop() {
 		player.y += 1
 	}
 	for (let i=0;i<obj.length;i++) {
+		obj[i].c()
 		obj[i].draw()
 		if (keyW) {
 			obj[i].pMove(0, 0, -1)
